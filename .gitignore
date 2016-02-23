@@ -1,6 +1,6 @@
-build
-vendor
-resources
+/build
+/vendor
+/cache
+/tests/cache
 phpunit.xml
-phpunit-*.xml
 composer.lock

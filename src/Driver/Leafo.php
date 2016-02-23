@@ -13,19 +13,12 @@
  * @author    Denis Smetannikov <denis@jbzoo.com>
  */
 
-namespace JBZoo\Less;
+namespace JBZoo\Less\Driver;
 
 /**
- * Class LessManager
+ * Class Driver
  * @package JBZoo\Less
  */
-class LessManager
+abstract class Leafo
 {
-    /**
-     * @return string
-     */
-    public function doSomeStreetMagic()
-    {
-        return 'street magic';
-    }
 }

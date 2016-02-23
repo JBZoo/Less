@@ -15,28 +15,19 @@
 
 namespace JBZoo\PHPUnit;
 
-use JBZoo\Less\LessManager;
-use JBZoo\Less\Exception;
+use JBZoo\Less\Less;
+use JBZoo\Utils\FS;
 
 /**
- * Class LessManagerTest
+ * Class DriverGpeasyTest
  * @package JBZoo\PHPUnit
+ * @SuppressWarnings(PHPMD.Superglobals)
  */
-class LessManagerTest extends PHPUnit
+class DriverGpeasyTest extends AbstractLessTest
 {
-
-    public function testShouldDoSomeStreetMagic()
+    protected function setUp()
     {
-        $obj = new LessManager();
-
-        is('street magic', $obj->doSomeStreetMagic());
-    }
-
-    /**
-     * @expectedException \JBZoo\Less\Exception
-     */
-    public function testShouldShowException()
-    {
-        throw new Exception('Test message');
+        parent::setUp();
+        $this->_driver = 'gpeasy';
     }
 }
