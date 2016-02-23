@@ -25,3 +25,6 @@ if ($autoload = realpath('./vendor/autoload.php')) {
     echo 'Please execute "composer update" !' . PHP_EOL;
     exit(1);
 }
+
+require_once PROJECT_TESTS . '/AbstractLessTest.php';
+

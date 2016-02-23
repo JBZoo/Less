@@ -15,9 +15,6 @@
 
 namespace JBZoo\PHPUnit;
 
-use JBZoo\Less\Less;
-use JBZoo\Utils\FS;
-
 /**
  * Class DriverGpeasyTest
  * @package JBZoo\PHPUnit
@@ -28,6 +25,7 @@ class DriverGpeasyTest extends AbstractLessTest
     protected function setUp()
     {
         parent::setUp();
-        $this->_driver = 'gpeasy';
+        $this->_driver       = 'gpeasy';
+        $this->_expectedPath = 'gpeasy';
     }
 }

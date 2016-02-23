@@ -62,7 +62,7 @@ class Gpeasy extends Driver
             'indentation'  => '    ',
         );
 
-        if ($this->_options->get('debug', false, 'bool')) {
+        if ($this->_isDebug()) {
             $options['sourceMap']         = true;
             $options['sourceMapRootpath'] = $this->_options->get('root_path');
             $options['sourceMapBasepath'] = $this->_options->get('root_path');
@@ -93,18 +93,20 @@ class Gpeasy extends Driver
     /**
      * {@inheritdoc}
      */
-    public function setImportPath($fullPath, $relPath)
+    public function setImportPath($fullPath, $relPath = null)
     {
         $this->_initCompiler();
+
+        $relPath = $relPath ?: $this->_options->get('root_url');
 
         if (!FS::isDir($fullPath)) {
             throw new Exception('Undefined import path: ' . $fullPath);
         }
 
-        $oldDirs = \Less_Parser::$options['import_dirs'];
+        $importPaths = \Less_Parser::$options['import_dirs'];
 
-        $oldDirs[$fullPath] = (string)$relPath;
+        $importPaths[$fullPath] = $relPath;
 
-        $this->_compiler->SetImportDirs($oldDirs);
+        $this->_compiler->SetImportDirs($importPaths);
     }
 }

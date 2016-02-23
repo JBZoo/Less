@@ -17,6 +17,7 @@ namespace JBZoo\Less\Driver;
 
 use JBZoo\Data\Data;
 use JBZoo\Less\Exception;
+use JBZoo\Utils\FS;
 
 /**
  * Class Driver
@@ -49,18 +50,29 @@ abstract class Driver
      */
     public function compile($fullPath, $relPath)
     {
+        $this->_initCompiler();
+        $fullPath = FS::real($fullPath);
         $result = $this->_compile($fullPath, $relPath);
 
         return $result;
     }
 
     /**
-     * @param string  $fullPath
-     * @param  string $relPath
+     * @return bool
+     */
+    protected function _isDebug()
+    {
+        return $this->_options->get('debug', false, 'bool');
+    }
+
+
+    /**
+     * @param string      $fullPath
+     * @param string|null $relPath
      * @return string
      * @throws Exception
      */
-    abstract public function setImportPath($fullPath, $relPath);
+    abstract public function setImportPath($fullPath, $relPath = null);
 
     /**
      * @param string  $fullPath

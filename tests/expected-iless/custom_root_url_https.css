@@ -1,0 +1,15 @@
+a {
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+  background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 no-repeat;
+}
+a:hover {
+  opacity: 70 / 100;
+  filter: alpha(opacity=70);
+  background: url('butterfly.jpg') 0 0 no-repeat;
+}
+.food, .beer, .sleep, .javascript {
+  font-weight: bold;
+}

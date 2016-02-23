@@ -26,6 +26,7 @@ use JBZoo\Utils\FS;
 abstract class AbstractLessTest extends PHPUnit
 {
     protected $_driver = '';
+    protected $_expectedPath = '';
 
     protected function setUp()
     {
@@ -42,6 +43,16 @@ abstract class AbstractLessTest extends PHPUnit
     public function testUndefinedDriver()
     {
         (new Less(['driver' => 'undefined']));
+    }
+
+    public function testCompileSimple()
+    {
+        $less = new Less(['driver' => $this->_driver]);
+
+        $actual   = $less->compile('tests/resources/simple.less');
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/simple.css';
+
+        $this->_isFileEq($expected, $actual);
     }
 
     /**
@@ -62,16 +73,6 @@ abstract class AbstractLessTest extends PHPUnit
         $less->compile('tests/resources/undefined.less');
     }
 
-    public function testCompileSimple()
-    {
-        $less = new Less(['driver' => $this->_driver]);
-
-        $actual   = $less->compile('tests/resources/simple.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/simple.css';
-
-        $this->_isFileEq($expected, $actual);
-    }
-
     public function testCustomCachePath()
     {
         $uniqCacheFolder = uniqid();
@@ -84,7 +85,7 @@ abstract class AbstractLessTest extends PHPUnit
         $less->compile('tests/resources/simple.less');
 
         $actual   = PROJECT_ROOT . '/tests/cache/' . $uniqCacheFolder . '/tests_resources_simple_less.css';
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/simple.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/simple.css';
 
         $this->_isFileEq($expected, $actual);
     }
@@ -93,27 +94,27 @@ abstract class AbstractLessTest extends PHPUnit
     {
         $less     = new Less(['driver' => $this->_driver, 'root_url' => '//custom-site.com/']);
         $actual   = $less->compile('tests/resources/simple.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/custom_root_url.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/custom_root_url.css';
         $this->_isFileEq($expected, $actual);
 
         $less     = new Less(['driver' => $this->_driver, 'root_url' => 'http://custom-site.com/']);
         $actual   = $less->compile('tests/resources/simple.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/custom_root_url_http.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/custom_root_url_http.css';
         $this->_isFileEq($expected, $actual);
 
         $less     = new Less(['driver' => $this->_driver, 'root_url' => 'https://custom-site.com/']);
         $actual   = $less->compile('tests/resources/simple.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/custom_root_url_https.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/custom_root_url_https.css';
         $this->_isFileEq($expected, $actual);
 
         $less     = new Less(['driver' => $this->_driver, 'root_url' => '.']);
         $actual   = $less->compile('tests/resources/simple.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/custom_root_url_dot.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/custom_root_url_dot.css';
         $this->_isFileEq($expected, $actual);
 
         $less     = new Less(['driver' => $this->_driver, 'root_url' => '../../path/']);
         $actual   = $less->compile('tests/resources/simple.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/custom_root_url_complex.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/custom_root_url_complex.css';
         $this->_isFileEq($expected, $actual);
     }
 
@@ -158,7 +159,7 @@ abstract class AbstractLessTest extends PHPUnit
         ]]);
 
         $actual   = $less->compile('tests/resources/vars.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/vars.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/vars.css';
 
         $this->_isFileEq($expected, $actual);
     }
@@ -172,12 +173,12 @@ abstract class AbstractLessTest extends PHPUnit
         ]]);
 
         $actual   = $less->compile('tests/resources/autoload.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/autoload.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/autoload.css';
 
         $this->_isFileEq($expected, $actual);
     }
 
-    public function testImportPaths()
+    public function testNestedImportPaths()
     {
         $less = new Less([
             'driver'       => $this->_driver,
@@ -187,7 +188,7 @@ abstract class AbstractLessTest extends PHPUnit
         ]);
 
         $actual   = $less->compile('tests/resources/import.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/import.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/import.css';
 
         $this->_isFileEq($expected, $actual);
     }
@@ -202,7 +203,7 @@ abstract class AbstractLessTest extends PHPUnit
         );
 
         $actual   = $less->compile('tests/resources/import.less');
-        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_driver . '/import.css';
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/import.css';
 
         $this->_isFileEq($expected, $actual);
     }

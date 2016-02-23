@@ -37,7 +37,7 @@ try { // Any error handling
         ],
 
         'autoload'     => [                     // Autoload before eash compiling
-            '/full/path/to/my_mixins.less',     // See the best of coolection here
+            '/full/path/to/my_mixins.less',     // See the best of collection here
         ],                                      // https://github.com/JBZoo/JBlank/tree/master/less/misc
 
         'import_paths' => [                     // Import paths

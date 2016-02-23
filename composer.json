@@ -3,7 +3,10 @@
     "type"              : "library",
     "description"       : "PHP wrapper for any less-compilers",
     "license"           : "MIT",
-    "keywords"          : ["less", "css", "compilier", "less.js", "stylesheet", "jbzoo", "packagist"],
+    "keywords"          : [
+        "less", "css", "less.js", "stylesheet",
+        "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler"
+    ],
     "minimum-stability" : "stable",
     "authors"           : [
         {
@@ -16,7 +19,6 @@
         "php"               : ">=5.4",
         "jbzoo/data"        : "^1.3.4",
         "jbzoo/utils"       : "^1.4.5",
-        "leafo/lessphp"     : "^0.5",
         "oyejorge/less.php" : "^1.7"
     },
     "require-dev"       : {
