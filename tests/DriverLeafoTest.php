@@ -34,7 +34,7 @@ class DriverLeafoTest extends AbstractLessTest
             $this->_expectedPath = 'leafo-pseudo';
         }
 
-        //incomplete('"leafo/lessphp" too old package. Please use the "gpeasy" driver');
+        incomplete('"leafo/lessphp" too old package. Please use the "gpeasy" driver');
     }
 
     public function testMixins()
