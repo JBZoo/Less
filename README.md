@@ -46,6 +46,15 @@ try { // Any error handling
         ],
         'cache_path'   => './cache',            // Where JBZoo/Less will save compiled CSS-files
         'cache_ttl'    => 2592000,              // How often rebuild css files (in seconds)
+
+        'functions' => [                        // Custom functions for less (only for gpeasy!)
+            'str-revert' => function ($arg) {   // str-revert('1234567890'); => '0987654321';
+                if (is_a($arg, '\Less_Tree_Quoted')) {
+                    $arg->value = strrev($arg->value);
+                    return $arg;
+                }
+            },
+        ],
     ]);
 
     $less->setImportPath(

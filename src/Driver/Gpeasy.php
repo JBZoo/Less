@@ -87,6 +87,12 @@ class Gpeasy extends Driver
             $this->setImportPath($fullPath, $relPath);
         }
 
+        // Set paths
+        $functions = (array)$this->_options->get('functions', [], 'arr');
+        foreach ($functions as $name => $function) {
+            $this->_compiler->registerFunction($name, $function);
+        }
+
         return $this->_compiler;
     }
 

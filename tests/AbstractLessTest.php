@@ -257,6 +257,26 @@ abstract class AbstractLessTest extends PHPUnit
         isNotSame($mtimeExpected, $mtimeActual);
     }
 
+    public function testCustomFunction()
+    {
+        $less = new Less([
+            'driver'    => $this->_driver,
+            'functions' => [
+                'str-revert' => function ($arg) {
+                    if (is_a($arg, '\Less_Tree_Quoted')) {
+                        $arg->value = strrev($arg->value);
+                        return $arg;
+                    }
+                },
+            ],
+        ]);
+
+        $actual   = $less->compile('tests/resources/function.less');
+        $expected = PROJECT_ROOT . '/tests/expected-' . $this->_expectedPath . '/function.css';
+
+        $this->_isFileEq($expected, $actual);
+    }
+
     /**
      * Compare files
      * @param string $expectedFile

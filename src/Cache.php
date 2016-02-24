@@ -134,7 +134,8 @@ class Cache
         }
         ksort($hashes);
 
-        $options = $this->_options->getArrayCopy();
+        $options              = $this->_options->getArrayCopy();
+        $options['functions'] = array_keys($options['functions']);
         ksort($options);
 
         $hashed = [
