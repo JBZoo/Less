@@ -20,7 +20,7 @@ namespace JBZoo\PHPUnit;
  * @package JBZoo\PHPUnit
  * @SuppressWarnings(PHPMD.Superglobals)
  */
-class DriverILessTest extends AbstractLessTest
+class DriverIlessTest extends AbstractLessTest
 {
     protected function setUp()
     {
