@@ -5,7 +5,7 @@
     "license"           : "MIT",
     "keywords"          : [
         "less", "css", "less.js", "stylesheet",
-        "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler", "iless"
+        "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler"
     ],
     "minimum-stability" : "stable",
     "authors"           : [
@@ -23,6 +23,10 @@
     },
     "require-dev"       : {
         "jbzoo/phpunit" : "^1.0"
+    },
+    "suggest"           : {
+        "mishal/iless"  : "^2.1.0",
+        "leafo/lessphp" : "^0.5"
     },
     "autoload"          : {
         "psr-4" : {
