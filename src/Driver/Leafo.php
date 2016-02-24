@@ -21,6 +21,7 @@ use JBZoo\Utils\FS;
 /**
  * Class Leafo
  * @package JBZoo\Less
+ * @codeCoverageIgnore
  */
 class Leafo extends Driver
 {
