@@ -78,7 +78,7 @@ class Gpeasy extends Driver
             $this->_compiler->parseFile($mixin);
         }
 
-        // add custom vars
+        // Add custom vars
         $this->_compiler->ModifyVars((array)$this->_options->get('global_vars', []));
 
         // Set paths
@@ -87,7 +87,7 @@ class Gpeasy extends Driver
             $this->setImportPath($fullPath, $relPath);
         }
 
-        // Set paths
+        // Set cutsom functions
         $functions = (array)$this->_options->get('functions', [], 'arr');
         foreach ($functions as $name => $function) {
             $this->_compiler->registerFunction($name, $function);

@@ -22,37 +22,36 @@ try { // Any error handling
 
     // There is not option required
     $less = Less([
-        'driver'       => 'gpeasy',             // Compiler's Driver
-        'force'        => false,                // Can forced compile on each compile() calling
-        'debug'        => false,                // On/Off Source map for browser debug console
+        'driver'       => 'gpeasy',                 // Compiler's Driver
+        'force'        => false,                    // Can forced compile on each compile() calling
+        'debug'        => false,                    // On/Off Source map for browser debug console
 
-        'root_url'     => 'http://site.com/',   // Root URL for compilled CSS files
-                                                // For example - background:url('http://site.com/image.png')
+        'root_url'     => 'http://site.com/',       // Root URL for all CSS files and debug mode
+                                                    // For example - background:url('http://site.com/image.png')
 
-        'root_path'    => '/full/path/to/site', // Full path to root of web directory
+        'root_path'    => '/full/path/to/site',     // Full path to root of web directory
 
-        'global_vars'  => [                     // Some vars that will be in all less files
-            'main-color'  => '#f00',
-            'media-print' => 'print',
+        'global_vars'  => [                         // Some vars that will be in all less files
+            'color'  => '#f00',                     // @color: #f00;
+            'media' => 'print',                     // @media: print;
         ],
 
-        'autoload'     => [                     // Autoload before eash compiling
-            '/full/path/to/my_mixins.less',     // See the best of collection here
-        ],                                      // https://github.com/JBZoo/JBlank/tree/master/less/misc
+        'autoload'     => [                         // Autoload before eash compiling
+            '/full/path/to/my_mixins.less',         // See the best of collection here
+        ],                                          // https://github.com/JBZoo/JBlank/tree/master/less/misc
 
-        'import_paths' => [                     // Import paths
+        'import_paths' => [                         // Import paths
             '/full/path/to/assets/less/' => 'http://site.com/assets/less/',
             './or/relative/path/to/dir/' => './or/relative/path/to/dir/',
         ],
-        'cache_path'   => './cache',            // Where JBZoo/Less will save compiled CSS-files
-        'cache_ttl'    => 2592000,              // How often rebuild css files (in seconds)
 
-        'functions' => [                        // Custom functions for less (only for gpeasy!)
-            'str-revert' => function ($arg) {   // str-revert('1234567890'); => '0987654321';
-                if (is_a($arg, '\Less_Tree_Quoted')) {
-                    $arg->value = strrev($arg->value);
-                    return $arg;
-                }
+        'cache_path'   => './cache',                // Where JBZoo/Less will save compiled CSS-files
+        'cache_ttl'    => 2592000,                  // How often rebuild css files (in seconds)
+
+        'functions' => [                            // Custom functions for less (only for gpeasy!)
+            'str-revert' => function ($arg) {       // Register name `str-revert()`
+                $arg->value = strrev($arg->value);  // Just revert argument
+                return $arg;                        // Result: str-revert('1234567890'); => '0987654321';
             },
         ],
     ]);

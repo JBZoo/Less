@@ -263,10 +263,8 @@ abstract class AbstractLessTest extends PHPUnit
             'driver'    => $this->_driver,
             'functions' => [
                 'str-revert' => function ($arg) {
-                    if (is_a($arg, '\Less_Tree_Quoted')) {
-                        $arg->value = strrev($arg->value);
-                        return $arg;
-                    }
+                    $arg->value = strrev($arg->value);
+                    return $arg;
                 },
             ],
         ]);
