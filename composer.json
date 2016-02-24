@@ -5,7 +5,7 @@
     "license"           : "MIT",
     "keywords"          : [
         "less", "css", "less.js", "stylesheet",
-        "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler"
+        "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler", "iless"
     ],
     "minimum-stability" : "stable",
     "authors"           : [
