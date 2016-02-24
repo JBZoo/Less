@@ -69,7 +69,6 @@ abstract class Driver
     /**
      * @param string      $fullPath
      * @param string|null $relPath
-     * @return string
      * @throws Exception
      */
     abstract public function setImportPath($fullPath, $relPath = null);

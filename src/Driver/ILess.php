@@ -71,7 +71,5 @@ class ILess extends Driver
         if (!FS::isDir($fullPath)) {
             throw new Exception('Undefined import path: ' . $fullPath);
         }
-
-        return false;
     }
 }
