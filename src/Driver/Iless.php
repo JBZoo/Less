@@ -24,7 +24,7 @@ use JBZoo\Utils\FS;
  * @package JBZoo\Less
  * @codeCoverageIgnore
  */
-class ILess extends Driver
+class Iless extends Driver
 {
     /**
      * @var Parser
