@@ -21,7 +21,8 @@
         "jbzoo/utils" : "^1.4.5"
     },
     "require-dev"       : {
-        "jbzoo/phpunit" : "^1.0"
+        "jbzoo/phpunit"     : "^1.0",
+        "oyejorge/less.php" : "^1.7"
     },
     "suggest"           : {
         "oyejorge/less.php" : "^1.7",
