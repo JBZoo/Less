@@ -74,6 +74,7 @@ class Less
     /**
      * @param array $options
      * @return Data
+     * @throws Exception
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     protected function _prepareOptions(array $options)
@@ -86,6 +87,10 @@ class Less
 
         // Check cache directory
         $cachePath = FS::clean($options['cache_path']);
+        if (!$cachePath) {
+            throw new Exception('Option "cache_path" is empty!');
+        }
+
         if (!FS::isDir($cachePath)) {
             mkdir($cachePath, 0755, true);
         }

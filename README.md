@@ -6,8 +6,8 @@ PHP wrapper for any less-compilers. Now recommended to use [oyejorge/less.php](h
 
 ## Install
 ```sh
-composer require jbzoo/less:"1.x-dev"  # Last version
-composer require jbzoo/less            # Stable version
+composer require jbzoo/less                 # Stable version
+composer require oyejorge/less.php:"^1.7"   # Package for Gpeasy driver
 ```
 
 ## Usage
