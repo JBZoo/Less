@@ -77,8 +77,8 @@ try { // Any error handling
 
 ## Unit tests and check code style
 ```sh
-composer update-all
-composer test
+make
+make test-all
 ```
 
 
