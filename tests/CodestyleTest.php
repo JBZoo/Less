@@ -81,6 +81,7 @@ class CodestyleTest extends Codestyle
         $finder
             ->files()
             ->in(PROJECT_ROOT)
+            ->notName('Makefile')
             ->notName('*_less.css') // Only for JBZoo/Less
             ->exclude($this->_excludePaths);
 
