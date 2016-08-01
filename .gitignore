@@ -2,5 +2,5 @@
 /vendor
 /cache
 /tests/cache
-phpunit.xml
-composer.lock
+/phpunit.xml
+/composer.lock
