@@ -125,7 +125,7 @@ abstract class AbstractLessTest extends PHPUnit
         clearstatcache(false, $path);
         $mtimeExpected = filemtime($path);
 
-        sleep(1);
+        sleep(2);
 
         $path = $less->compile('tests/resources/simple.less');
         clearstatcache(false, $path);
