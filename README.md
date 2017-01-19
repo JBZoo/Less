@@ -21,7 +21,7 @@ use JBZoo\Less\Less;
 try { // Any error handling
 
     // There is not option required
-    $less = Less([
+    $less = new Less([
         'driver'       => 'gpeasy',                 // Compiler's Driver
         'force'        => false,                    // Can forced compile on each compile() calling
         'debug'        => false,                    // On/Off Source map for browser debug console
