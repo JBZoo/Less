@@ -66,6 +66,7 @@ class Gpeasy extends Driver
             $options['sourceMap']         = true;
             $options['sourceMapRootpath'] = $this->_options->get('root_path');
             $options['sourceMapBasepath'] = $this->_options->get('root_path');
+            $options['compress']          = $this->_options->get('compress', false);
         }
 
         // Create compilier
