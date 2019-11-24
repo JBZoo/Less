@@ -67,13 +67,13 @@ class Cache
     }
 
     /**
-     * @param string $lessfile
-     * @param string $basepath
+     * @param string $lessFile
+     * @param string $basePath
      */
-    public function setFile($lessfile, $basepath)
+    public function setFile($lessFile, $basePath)
     {
-        $this->less = FS::real($lessfile);
-        $this->base = FS::clean($basepath);
+        $this->less = FS::real($lessFile);
+        $this->base = FS::clean($basePath);
 
         $this->hash = $this->_getHash();
         $this->resultFile = $this->_getResultFile();
@@ -95,11 +95,8 @@ class Cache
 
         $firstLine = trim(FS::firstLine($this->resultFile));
         $expected = trim($this->_getHeader());
-        if ($expected === $firstLine) {
-            return false;
-        }
 
-        return true;
+        return $expected !== $firstLine;
     }
 
     /**
@@ -113,7 +110,7 @@ class Cache
         $relPath = Slug::filter($relPath, '_');
         $relPath = Str::low($relPath);
 
-        // Gett full clean path
+        // Get full clean path
         $fullPath = FS::real($this->options->get('cache_path')) . '/' . $relPath . '.css';
         $fullPath = FS::clean($fullPath);
 
@@ -146,9 +143,8 @@ class Cache
         ];
 
         $hashed = serialize($hashed);
-        $hash = md5($hashed); // md5 is faster than sha1!
 
-        return $hash;
+        return md5($hashed); // md5 is faster than sha1!
     }
 
     /**
@@ -156,7 +152,7 @@ class Cache
      */
     protected function _getHeader()
     {
-        return '/* cacheid:' . $this->hash . ' */' . PHP_EOL;
+        return '/* cache-id:' . $this->hash . ' */' . PHP_EOL;
     }
 
     /**

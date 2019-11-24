@@ -33,7 +33,7 @@ class Gpeasy extends Driver
     /**
      * {@inheritdoc}
      */
-    protected function _compile($fullPath, $relPath)
+    protected function compileFile($fullPath, $relPath)
     {
         $this->initCompiler();
 
@@ -88,7 +88,7 @@ class Gpeasy extends Driver
             $this->setImportPath($fullPath, $relPath);
         }
 
-        // Set cutsom functions
+        // Set custom functions
         $functions = (array)$this->_options->get('functions', [], 'arr');
         foreach ($functions as $name => $function) {
             $this->compiler->registerFunction($name, $function);

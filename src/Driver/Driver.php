@@ -51,9 +51,8 @@ abstract class Driver
     {
         $this->initCompiler();
         $fullPath = FS::real($fullPath);
-        $result = $this->_compile($fullPath, $relPath);
 
-        return $result;
+        return $this->compileFile($fullPath, $relPath);
     }
 
     /**
@@ -77,7 +76,7 @@ abstract class Driver
      * @param string $relPath
      * @return string
      */
-    abstract protected function _compile($fullPath, $relPath);
+    abstract protected function compileFile($fullPath, $relPath);
 
     /**
      * @return mixed
