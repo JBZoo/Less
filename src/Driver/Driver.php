@@ -6,11 +6,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package   Less
- * @license   MIT
- * @copyright Copyright (C) JBZoo.com,  All rights reserved.
- * @link      https://github.com/JBZoo/Less
- * @author    Denis Smetannikov <denis@jbzoo.com>
+ * @package    Less
+ * @license    MIT
+ * @copyright  Copyright (C) JBZoo.com, All rights reserved.
+ * @link       https://github.com/JBZoo/Less
  */
 
 namespace JBZoo\Less\Driver;
@@ -74,8 +73,8 @@ abstract class Driver
     abstract public function setImportPath($fullPath, $relPath = null);
 
     /**
-     * @param string  $fullPath
-     * @param  string $relPath
+     * @param string $fullPath
+     * @param string $relPath
      * @return string
      */
     abstract protected function _compile($fullPath, $relPath);

@@ -6,11 +6,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package   Less
- * @license   MIT
- * @copyright Copyright (C) JBZoo.com,  All rights reserved.
- * @link      https://github.com/JBZoo/Less
- * @author    Denis Smetannikov <denis@jbzoo.com>
+ * @package    Less
+ * @license    MIT
+ * @copyright  Copyright (C) JBZoo.com, All rights reserved.
+ * @link       https://github.com/JBZoo/Less
  */
 
 namespace JBZoo\PHPUnit;
@@ -22,10 +21,10 @@ namespace JBZoo\PHPUnit;
  */
 class DriverGpeasyTest extends AbstractLessTest
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->_driver       = 'gpeasy';
-        $this->_expectedPath = 'gpeasy';
+        $this->driver = 'gpeasy';
+        $this->expectedPath = 'gpeasy';
     }
 }

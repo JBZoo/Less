@@ -6,11 +6,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package   Less
- * @license   MIT
- * @copyright Copyright (C) JBZoo.com,  All rights reserved.
- * @link      https://github.com/JBZoo/Less
- * @author    Denis Smetannikov <denis@jbzoo.com>
+ * @package    Less
+ * @license    MIT
+ * @copyright  Copyright (C) JBZoo.com, All rights reserved.
+ * @link       https://github.com/JBZoo/Less
  */
 
 namespace JBZoo\Less;
@@ -76,7 +75,7 @@ class Cache
         $this->_less = FS::real($lessfile);
         $this->_base = FS::clean($basepath);
 
-        $this->_hash       = $this->_getHash();
+        $this->_hash = $this->_getHash();
         $this->_resultFile = $this->_getResultFile();
     }
 
@@ -95,7 +94,7 @@ class Cache
         }
 
         $firstLine = trim(FS::firstLine($this->_resultFile));
-        $expected  = trim($this->_getHeader());
+        $expected = trim($this->_getHeader());
         if ($expected === $firstLine) {
             return false;
         }
@@ -134,7 +133,7 @@ class Cache
         }
         ksort($hashes);
 
-        $options              = $this->_options->getArrayCopy();
+        $options = $this->_options->getArrayCopy();
         $options['functions'] = array_keys($options['functions']);
         ksort($options);
 
@@ -147,7 +146,7 @@ class Cache
         ];
 
         $hashed = serialize($hashed);
-        $hash   = md5($hashed); // md5 is faster than sha1!
+        $hash = md5($hashed); // md5 is faster than sha1!
 
         return $hash;
     }
@@ -169,7 +168,7 @@ class Cache
     public function save($content)
     {
         $content = $this->_getHeader() . $content;
-        $result  = file_put_contents($this->_resultFile, $content);
+        $result = file_put_contents($this->_resultFile, $content);
 
         if (!$result) {
             throw new Exception('JBZoo/Less: File not save - ' . $this->_resultFile); // @codeCoverageIgnore

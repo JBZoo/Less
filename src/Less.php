@@ -6,20 +6,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package   Less
- * @license   MIT
- * @copyright Copyright (C) JBZoo.com,  All rights reserved.
- * @link      https://github.com/JBZoo/Less
- * @author    Denis Smetannikov <denis@jbzoo.com>
+ * @package    Less
+ * @license    MIT
+ * @copyright  Copyright (C) JBZoo.com, All rights reserved.
+ * @link       https://github.com/JBZoo/Less
  */
 
 namespace JBZoo\Less;
 
-use JBZoo\Less\Driver\Driver;
 use JBZoo\Data\Data;
+use JBZoo\Less\Driver\Driver;
 use JBZoo\Utils\FS;
 use JBZoo\Utils\Sys;
 use JBZoo\Utils\Url;
+use RuntimeException;
 
 /**
  * Class Less
@@ -30,8 +30,8 @@ class Less
     /**
      * @var array
      */
-    protected $_default = [
-        'driver'       => 'gpeasy', // Recomended
+    protected $default = [
+        'driver'       => 'gpeasy', // Recommended
         'force'        => false,
         'debug'        => false,    // On/Off Source map for browser debug console
         'root_url'     => null,
@@ -47,28 +47,28 @@ class Less
     /**
      * @var Data
      */
-    protected $_options;
+    protected $options;
 
     /**
      * @var Driver
      */
-    protected $_driver;
+    protected $driver;
 
     /**
      * @param array $options
      * @throws Exception
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
-        $this->_options = $this->_prepareOptions($options);
-        $driverName     = $this->_options->get('driver');
+        $this->options = $this->prepareOptions($options);
+        $driverName = $this->options->get('driver');
 
         $driverClass = __NAMESPACE__ . '\\Driver\\' . $driverName;
         if (!class_exists($driverClass)) {
             throw new Exception('Undefined driver: ' . $driverName);
         }
 
-        $this->_driver = new $driverClass($this->_options);
+        $this->driver = new $driverClass($this->options);
     }
 
     /**
@@ -77,13 +77,13 @@ class Less
      * @throws Exception
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected function _prepareOptions(array $options)
+    protected function prepareOptions(array $options)
     {
         // Default data for current system
-        $this->_default['root_url']  = Url::root();
-        $this->_default['root_path'] = Sys::getDocRoot();
+        $this->default['root_url'] = Url::root();
+        $this->default['root_path'] = Sys::getDocRoot();
 
-        $options = array_merge($this->_default, $options);
+        $options = array_merge($this->default, $options);
 
         // Check cache directory
         $cachePath = FS::clean($options['cache_path']);
@@ -91,14 +91,14 @@ class Less
             throw new Exception('Option "cache_path" is empty!');
         }
 
-        if (!FS::isDir($cachePath)) {
-            mkdir($cachePath, 0755, true);
+        if (!FS::isDir($cachePath) && !mkdir($cachePath, 0755, true) && !is_dir($cachePath)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $cachePath));
         }
 
         $options['cache_path'] = FS::real($cachePath);
-        $options['root_url']   = rtrim($options['root_url'], '/');
-        $options['root_path']  = FS::real($options['root_path']);
-        $options['driver']     = ucfirst(strtolower(trim($options['driver'])));
+        $options['root_url'] = rtrim($options['root_url'], '/');
+        $options['root_path'] = FS::real($options['root_path']);
+        $options['driver'] = ucfirst(strtolower(trim($options['driver'])));
 
         // Check mixin paths
         $lessFile = (array)$options['autoload'];
@@ -122,63 +122,64 @@ class Less
     }
 
     /**
-     * @param string|null $basepath
+     * @param string|null $basePath
      * @param string      $default
      * @return string
      */
-    protected function _prepareBasepath($basepath, $default)
+    protected function prepareBasePath($basePath, $default)
     {
-        $basepath = $basepath ?: $default;
+        $basePath = $basePath ?: $default;
 
-        if (!Url::isAbsolute($basepath)) {
-            $basepath = trim($basepath, '\\/');
-            $basepath = $this->_options->get('root_url') . '/' . $basepath;
+        if (!Url::isAbsolute($basePath)) {
+            $basePath = trim($basePath, '\\/');
+            $basePath = $this->options->get('root_url') . '/' . $basePath;
         }
 
-        return $basepath;
+        return $basePath;
     }
 
     /**
-     * @param string $lessfile
-     * @param string $basepath
+     * @param string $lessFile
+     * @param string $basePath
      * @return string
      * @throws Exception
      */
-    public function compile($lessfile, $basepath = null)
+    public function compile($lessFile, $basePath = null)
     {
         try {
-            $basepath = $this->_prepareBasepath($basepath, dirname($lessfile));
+            $basePath = $this->prepareBasePath($basePath, dirname($lessFile));
 
-            $cache = new Cache($this->_options);
-            $cache->setFile($lessfile, $basepath);
+            $cache = new Cache($this->options);
+            $cache->setFile($lessFile, $basePath);
 
-            $isForce = $this->_options->get('force', false, 'bool');
+            $isForce = $this->options->get('force', false, 'bool');
 
             if ($isForce || $cache->isExpired()) {
-                $result = $this->_driver->compile($lessfile, $basepath);
+                $result = $this->driver->compile($lessFile, $basePath);
                 $cache->save($result);
             }
 
-            $csspath = $cache->getFile();
+            $cssPath = $cache->getFile();
 
         } catch (\Exception $e) { // Rewrite exception type
 
             $message = 'JBZoo/Less: ' . $e->getMessage();
-            $trace   = $e->getTraceAsString();
+            $trace = $e->getTraceAsString();
 
             throw new Exception($message . PHP_EOL . $trace);
         }
 
-        return $csspath;
+        return $cssPath;
     }
 
     /**
      * @param string $fullPath
      * @param null   $relPath
+     * @throws Exception
      */
     public function setImportPath($fullPath, $relPath = null)
     {
-        $relPath = $relPath ?: $this->_options->get('root_url');
-        $this->_driver->setImportPath($fullPath, $relPath);
+        $relPath = $relPath ?: $this->options->get('root_url');
+        $this->driver->setImportPath($fullPath, $relPath);
     }
 }

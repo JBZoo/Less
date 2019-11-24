@@ -6,11 +6,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package   Less
- * @license   MIT
- * @copyright Copyright (C) JBZoo.com,  All rights reserved.
- * @link      https://github.com/JBZoo/Less
- * @author    Denis Smetannikov <denis@jbzoo.com>
+ * @package    Less
+ * @license    MIT
+ * @copyright  Copyright (C) JBZoo.com, All rights reserved.
+ * @link       https://github.com/JBZoo/Less
  */
 
 namespace JBZoo\Less\Driver;
@@ -52,7 +51,7 @@ class Gpeasy extends Driver
             return $this->_compiler;
         }
 
-        $options = array(
+        $options = [
             'compress'     => $this->_options->get('compress', false),
             'strictUnits'  => false,
             'strictMath'   => false,
@@ -60,10 +59,10 @@ class Gpeasy extends Driver
             'cache_method' => false,
             'sourceMap'    => false,
             'indentation'  => '    ',
-        );
+        ];
 
         if ($this->_isDebug()) {
-            $options['sourceMap']         = true;
+            $options['sourceMap'] = true;
             $options['sourceMapRootpath'] = $this->_options->get('root_path');
             $options['sourceMapBasepath'] = $this->_options->get('root_path');
         }
