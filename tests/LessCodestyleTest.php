@@ -54,7 +54,7 @@ class LessCodestyleTest extends Codestyle
      */
     public function testHeadersCSS()
     {
-        $valid = $this->_prepareTemplate(implode($this->_validHeaderCSS, $this->_le));
+        $valid = $this->_prepareTemplate(implode($this->_le, $this->_validHeaderCSS));
 
         $finder = new Finder();
         $finder

@@ -32,7 +32,7 @@ abstract class Driver
     /**
      * @var mixed
      */
-    protected $_compiler;
+    protected $compiler;
 
     /**
      * @param Data $options
@@ -49,7 +49,7 @@ abstract class Driver
      */
     public function compile($fullPath, $relPath)
     {
-        $this->_initCompiler();
+        $this->initCompiler();
         $fullPath = FS::real($fullPath);
         $result = $this->_compile($fullPath, $relPath);
 
@@ -82,5 +82,5 @@ abstract class Driver
     /**
      * @return mixed
      */
-    abstract protected function _initCompiler();
+    abstract protected function initCompiler();
 }

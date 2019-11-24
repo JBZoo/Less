@@ -41,7 +41,7 @@ class Less
         'import_paths' => [],
         'functions'    => [],
         'cache_path'   => './cache',
-        'cache_ttl'    => 2592000,
+        'cache_ttl'    => 2592000,  // 30 days
     ];
 
     /**

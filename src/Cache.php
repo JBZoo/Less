@@ -30,40 +30,40 @@ class Cache
     /**
      * @var int
      */
-    protected $_cache_ttl = 2592000; // 30 days
+    protected $cache_ttl = 2592000; // 30 days
 
     /**
      * @var string
      */
-    protected $_hash;
+    protected $hash;
 
     /**
      * @var string
      */
-    protected $_base;
+    protected $base;
 
     /**
      * @var string
      */
-    protected $_resultFile;
+    protected $resultFile;
 
     /**
      * @var string
      */
-    protected $_less;
+    protected $less;
 
     /**
      * @var Data
      */
-    protected $_options;
+    protected $options;
 
     /**
      * @param Data $options
      */
     public function __construct(Data $options)
     {
-        $this->_options = $options;
-        $this->setCacheTTL($this->_options->get('cache_ttl'));
+        $this->options = $options;
+        $this->setCacheTTL($this->options->get('cache_ttl'));
     }
 
     /**
@@ -72,11 +72,11 @@ class Cache
      */
     public function setFile($lessfile, $basepath)
     {
-        $this->_less = FS::real($lessfile);
-        $this->_base = FS::clean($basepath);
+        $this->less = FS::real($lessfile);
+        $this->base = FS::clean($basepath);
 
-        $this->_hash = $this->_getHash();
-        $this->_resultFile = $this->_getResultFile();
+        $this->hash = $this->_getHash();
+        $this->resultFile = $this->_getResultFile();
     }
 
     /**
@@ -84,16 +84,16 @@ class Cache
      */
     public function isExpired()
     {
-        if (!FS::isFile($this->_resultFile)) {
+        if (!FS::isFile($this->resultFile)) {
             return true;
         }
 
-        $fileAge = abs(time() - filemtime($this->_resultFile));
-        if ($fileAge >= $this->_cache_ttl) {
+        $fileAge = abs(time() - filemtime($this->resultFile));
+        if ($fileAge >= $this->cache_ttl) {
             return true;
         }
 
-        $firstLine = trim(FS::firstLine($this->_resultFile));
+        $firstLine = trim(FS::firstLine($this->resultFile));
         $expected = trim($this->_getHeader());
         if ($expected === $firstLine) {
             return false;
@@ -107,14 +107,14 @@ class Cache
      */
     protected function _getResultFile()
     {
-        $relPath = FS::getRelative($this->_less, $this->_options->get('root_path'));
+        $relPath = FS::getRelative($this->less, $this->options->get('root_path'));
 
         // Normalize relative path
         $relPath = Slug::filter($relPath, '_');
         $relPath = Str::low($relPath);
 
         // Gett full clean path
-        $fullPath = FS::real($this->_options->get('cache_path')) . '/' . $relPath . '.css';
+        $fullPath = FS::real($this->options->get('cache_path')) . '/' . $relPath . '.css';
         $fullPath = FS::clean($fullPath);
 
         return $fullPath;
@@ -126,21 +126,21 @@ class Cache
     protected function _getHash()
     {
         // Check depends
-        $mixins = $this->_options->get('autoload', [], 'arr');
+        $mixins = $this->options->get('autoload', [], 'arr');
         $hashes = [];
         foreach ($mixins as $mixin) {
             $hashes[$mixin] = md5_file($mixin);
         }
         ksort($hashes);
 
-        $options = $this->_options->getArrayCopy();
+        $options = $this->options->getArrayCopy();
         $options['functions'] = array_keys($options['functions']);
         ksort($options);
 
         $hashed = [
-            'less'     => $this->_less,
-            'less_md5' => md5_file($this->_less),
-            'base'     => $this->_base,
+            'less'     => $this->less,
+            'less_md5' => md5_file($this->less),
+            'base'     => $this->base,
             'mixins'   => $hashes,
             'options'  => $options,
         ];
@@ -156,7 +156,7 @@ class Cache
      */
     protected function _getHeader()
     {
-        return '/* cacheid:' . $this->_hash . ' */' . PHP_EOL;
+        return '/* cacheid:' . $this->hash . ' */' . PHP_EOL;
     }
 
     /**
@@ -168,10 +168,10 @@ class Cache
     public function save($content)
     {
         $content = $this->_getHeader() . $content;
-        $result = file_put_contents($this->_resultFile, $content);
+        $result = file_put_contents($this->resultFile, $content);
 
         if (!$result) {
-            throw new Exception('JBZoo/Less: File not save - ' . $this->_resultFile); // @codeCoverageIgnore
+            throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile); // @codeCoverageIgnore
         }
     }
 
@@ -180,7 +180,7 @@ class Cache
      */
     public function getFile()
     {
-        return $this->_resultFile;
+        return $this->resultFile;
     }
 
     /**
@@ -191,6 +191,6 @@ class Cache
         $newTTL = Filter::int($newTTL);
         $newTTL = Vars::limit($newTTL, 1, 86400 * 365);
 
-        $this->_cache_ttl = $newTTL;
+        $this->cache_ttl = $newTTL;
     }
 }

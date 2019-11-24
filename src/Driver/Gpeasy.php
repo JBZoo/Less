@@ -16,6 +16,8 @@ namespace JBZoo\Less\Driver;
 
 use JBZoo\Less\Exception;
 use JBZoo\Utils\FS;
+use Less_Exception_Parser;
+use Less_Parser;
 
 /**
  * Class Gpeasy
@@ -24,31 +26,31 @@ use JBZoo\Utils\FS;
 class Gpeasy extends Driver
 {
     /**
-     * @var \Less_Parser
+     * @var Less_Parser
      */
-    protected $_compiler;
+    protected $compiler;
 
     /**
      * {@inheritdoc}
      */
     protected function _compile($fullPath, $relPath)
     {
-        $this->_initCompiler();
+        $this->initCompiler();
 
-        $this->_compiler->parseFile($fullPath, $relPath);
+        $this->compiler->parseFile($fullPath, $relPath);
 
-        $resultCss = $this->_compiler->getCss();
-
-        return $resultCss;
+        return $this->compiler->getCss();
     }
 
     /**
-     * @return \Less_Parser
+     * @return Less_Parser
+     * @throws Exception
+     * @throws Less_Exception_Parser
      */
-    protected function _initCompiler()
+    protected function initCompiler()
     {
-        if ($this->_compiler) {
-            return $this->_compiler;
+        if ($this->compiler) {
+            return $this->compiler;
         }
 
         $options = [
@@ -67,18 +69,18 @@ class Gpeasy extends Driver
             $options['sourceMapBasepath'] = $this->_options->get('root_path');
         }
 
-        // Create compilier
-        $this->_compiler = new \Less_Parser($options);
-        $this->_compiler->Reset();
+        // Create compiler
+        $this->compiler = new Less_Parser($options);
+        $this->compiler->Reset();
 
         // Global depends
         $mixins = $this->_options->get('autoload');
         foreach ($mixins as $mixin) {
-            $this->_compiler->parseFile($mixin);
+            $this->compiler->parseFile($mixin);
         }
 
         // Add custom vars
-        $this->_compiler->ModifyVars((array)$this->_options->get('global_vars', []));
+        $this->compiler->ModifyVars((array)$this->_options->get('global_vars', []));
 
         // Set paths
         $importPaths = (array)$this->_options->get('import_paths', []);
@@ -89,10 +91,10 @@ class Gpeasy extends Driver
         // Set cutsom functions
         $functions = (array)$this->_options->get('functions', [], 'arr');
         foreach ($functions as $name => $function) {
-            $this->_compiler->registerFunction($name, $function);
+            $this->compiler->registerFunction($name, $function);
         }
 
-        return $this->_compiler;
+        return $this->compiler;
     }
 
     /**
@@ -100,7 +102,7 @@ class Gpeasy extends Driver
      */
     public function setImportPath($fullPath, $relPath = null)
     {
-        $this->_initCompiler();
+        $this->initCompiler();
 
         $relPath = $relPath ?: $this->_options->get('root_url');
 
@@ -108,10 +110,10 @@ class Gpeasy extends Driver
             throw new Exception('Undefined import path: ' . $fullPath);
         }
 
-        $importPaths = \Less_Parser::$options['import_dirs'];
+        $importPaths = Less_Parser::$options['import_dirs'];
 
         $importPaths[$fullPath] = $relPath;
 
-        $this->_compiler->SetImportDirs($importPaths);
+        $this->compiler->SetImportDirs($importPaths);
     }
 }
