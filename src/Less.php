@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JBZoo Less
  *
@@ -160,9 +161,7 @@ class Less
             }
 
             $cssPath = $cache->getFile();
-
         } catch (\Exception $e) { // Rewrite exception type
-
             $message = 'JBZoo/Less: ' . $e->getMessage();
             $trace = $e->getTraceAsString();
 
@@ -173,11 +172,11 @@ class Less
     }
 
     /**
-     * @param string $fullPath
-     * @param null   $relPath
+     * @param string      $fullPath
+     * @param string|null $relPath
      * @throws Exception
      */
-    public function setImportPath($fullPath, $relPath = null)
+    public function setImportPath($fullPath, $relPath = null): void
     {
         $relPath = $relPath ?: $this->options->get('root_url');
         $this->driver->setImportPath($fullPath, $relPath);

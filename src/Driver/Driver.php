@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JBZoo Less
  *
@@ -27,7 +28,7 @@ abstract class Driver
     /**
      * @var Data
      */
-    protected $_options;
+    protected $options;
 
     /**
      * @var mixed
@@ -39,7 +40,7 @@ abstract class Driver
      */
     public function __construct(Data $options)
     {
-        $this->_options = $options;
+        $this->options = $options;
     }
 
     /**
@@ -58,18 +59,17 @@ abstract class Driver
     /**
      * @return bool
      */
-    protected function _isDebug()
+    protected function isDebug()
     {
-        return $this->_options->get('debug', false, 'bool');
+        return $this->options->get('debug', false, 'bool');
     }
-
 
     /**
      * @param string      $fullPath
      * @param string|null $relPath
      * @throws Exception
      */
-    abstract public function setImportPath($fullPath, $relPath = null);
+    abstract public function setImportPath($fullPath, $relPath = null): void;
 
     /**
      * @param string $fullPath

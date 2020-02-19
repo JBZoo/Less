@@ -1,4 +1,5 @@
 <?php
+
 /**
  * JBZoo Less
  *
@@ -30,7 +31,7 @@ class Cache
     /**
      * @var int
      */
-    protected $cache_ttl = 2592000; // 30 days
+    protected $cacheTtl = 2592000; // 30 days
 
     /**
      * @var string
@@ -70,17 +71,18 @@ class Cache
      * @param string $lessFile
      * @param string $basePath
      */
-    public function setFile($lessFile, $basePath)
+    public function setFile($lessFile, $basePath): void
     {
         $this->less = FS::real($lessFile);
         $this->base = FS::clean($basePath);
 
-        $this->hash = $this->_getHash();
-        $this->resultFile = $this->_getResultFile();
+        $this->hash = $this->getHash();
+        $this->resultFile = $this->getResultFile();
     }
 
     /**
      * Check is current cache is expired
+     * @return bool
      */
     public function isExpired()
     {
@@ -89,12 +91,12 @@ class Cache
         }
 
         $fileAge = abs(time() - filemtime($this->resultFile));
-        if ($fileAge >= $this->cache_ttl) {
+        if ($fileAge >= $this->cacheTtl) {
             return true;
         }
 
         $firstLine = trim(FS::firstLine($this->resultFile));
-        $expected = trim($this->_getHeader());
+        $expected = trim($this->getHeader());
 
         return $expected !== $firstLine;
     }
@@ -102,7 +104,7 @@ class Cache
     /**
      * @return string
      */
-    protected function _getResultFile()
+    protected function getResultFile()
     {
         $relPath = FS::getRelative($this->less, $this->options->get('root_path'));
 
@@ -120,7 +122,7 @@ class Cache
     /**
      * @return string
      */
-    protected function _getHash()
+    protected function getHash()
     {
         // Check depends
         $mixins = $this->options->get('autoload', [], 'arr');
@@ -150,7 +152,7 @@ class Cache
     /**
      * @return string
      */
-    protected function _getHeader()
+    protected function getHeader()
     {
         return '/* cache-id:' . $this->hash . ' */' . PHP_EOL;
     }
@@ -161,13 +163,13 @@ class Cache
      * @param string $content
      * @throws Exception
      */
-    public function save($content)
+    public function save($content): void
     {
-        $content = $this->_getHeader() . $content;
+        $content = $this->getHeader() . $content;
         $result = file_put_contents($this->resultFile, $content);
 
         if (!$result) {
-            throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile); // @codeCoverageIgnore
+            throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile);
         }
     }
 
@@ -182,11 +184,11 @@ class Cache
     /**
      * @param int $newTTL In seconds (1 to 365 days)
      */
-    public function setCacheTTL($newTTL)
+    public function setCacheTTL($newTTL): void
     {
         $newTTL = Filter::int($newTTL);
         $newTTL = Vars::limit($newTTL, 1, 86400 * 365);
 
-        $this->cache_ttl = $newTTL;
+        $this->cacheTtl = $newTTL;
     }
 }
