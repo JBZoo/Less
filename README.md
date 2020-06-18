@@ -1,8 +1,12 @@
-# JBZoo Less  [![Build Status](https://travis-ci.org/JBZoo/Less.svg?branch=master)](https://travis-ci.org/JBZoo/Less)      [![Coverage Status](https://coveralls.io/repos/github/JBZoo/Less/badge.svg?branch=master)](https://coveralls.io/github/JBZoo/Less?branch=master)
+# JBZoo / Less
+
+[![Build Status](https://travis-ci.org/JBZoo/Less.svg?branch=master)](https://travis-ci.org/JBZoo/Less)    [![Coverage Status](https://coveralls.io/repos/JBZoo/Less/badge.svg)](https://coveralls.io/github/JBZoo/Less?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Less/coverage.svg)](https://shepherd.dev/github/JBZoo/Less)    
+[![Latest Stable Version](https://poser.pugx.org/JBZoo/Less/v)](https://packagist.org/packages/JBZoo/Less)    [![Latest Unstable Version](https://poser.pugx.org/JBZoo/Less/v/unstable)](https://packagist.org/packages/JBZoo/Less)    [![Dependents](https://poser.pugx.org/JBZoo/Less/dependents)](https://packagist.org/packages/JBZoo/Less/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/JBZoo/Less)](https://github.com/JBZoo/Less/issues)    [![Total Downloads](https://poser.pugx.org/JBZoo/Less/downloads)](https://packagist.org/packages/JBZoo/Less/stats)    [![GitHub License](https://img.shields.io/github/license/JBZoo/Less)](https://github.com/JBZoo/Less/blob/master/LICENSE)
+
+
 
 PHP wrapper for any less-compilers. Now recommended to use [oyejorge/less.php](https://github.com/oyejorge/less.php)
 
-[![License](https://poser.pugx.org/JBZoo/Less/license)](https://packagist.org/packages/JBZoo/Less)  [![Latest Stable Version](https://poser.pugx.org/JBZoo/Less/v/stable)](https://packagist.org/packages/JBZoo/Less) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/JBZoo/Less/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/JBZoo/Less/?branch=master)
 
 ## Install
 ```sh

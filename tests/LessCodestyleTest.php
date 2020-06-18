@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo Less
+ * JBZoo Toolbox - Less
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -14,86 +15,22 @@
 
 namespace JBZoo\PHPUnit;
 
-use SplFileInfo;
-use Symfony\Component\Finder\Finder;
-
 /**
- * Class LessCodestyleTest
+ * Class UtilsCodestyleTest
  * @package JBZoo\PHPUnit
  */
-class LessCodestyleTest extends Codestyle
+class LessCodestyleTest extends AbstractCopyrightTest
 {
-    protected $_packageName   = 'Less';
-    protected $_packageAuthor = 'Denis Smetannikov <denis@jbzoo.com>';
+    protected $packageName = "Less";
 
-    /**
-     * Ignore list for
-     * @var array
-     */
-    protected $_excludePaths = [
-        '.git',
-        '.idea',
-        'bin',
-        'bower_components',
-        'build',
-        'fonts',
-        'logs',
-        'node_modules',
-        'resources',
-        'vendor',
-
-        // Only for JBZoo/Less
-        'expected-gpeasy',
-        'expected-iless',
-        'expected-leafo-pseudo',
-        'expected-leafo-real',
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testHeadersCSS()
+    protected function setUp(): void
     {
-        $valid = $this->_prepareTemplate(implode($this->_le, $this->_validHeaderCSS));
+        parent::setUp();
 
-        $finder = new Finder();
-        $finder
-            ->files()
-            ->in(PROJECT_ROOT)
-            ->exclude($this->_excludePaths)
-            ->name('*.css')
-            ->notName('*_less.css') // Only for JBZoo/Less
-            ->notName('*.min.css');
-
-        /** @var SplFileInfo $file */
-        foreach ($finder as $file) {
-            $content = openFile($file->getPathname());
-            isContain($valid, $content, false, 'File has no valid header: ' . $file);
-        }
-
-        isTrue(true);
-    }
-
-    /**
-     * Test line endings
-     */
-    public function testFiles()
-    {
-        $finder = new Finder();
-        $finder
-            ->files()
-            ->in(PROJECT_ROOT)
-            ->notName('Makefile')
-            ->notName('*_less.css') // Only for JBZoo/Less
-            ->exclude($this->_excludePaths);
-
-        /** @var SplFileInfo $file */
-        foreach ($finder as $file) {
-            $content = openFile($file->getPathname());
-            isNotContain("\r", $content, false, 'File has \r symbol: ' . $file);
-            isNotContain("\t", $content, false, 'File has \t symbol: ' . $file);
-        }
-
-        isTrue(true);
+        $this->excludePaths[] = 'cache';
+        $this->excludePaths[] = 'expected-gpeasy';
+        $this->excludePaths[] = 'expected-iless';
+        $this->excludePaths[] = 'expected-leafo-pseudo';
+        $this->excludePaths[] = 'expected-leafo-real';
     }
 }

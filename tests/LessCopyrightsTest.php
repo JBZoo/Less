@@ -16,16 +16,10 @@
 namespace JBZoo\PHPUnit;
 
 /**
- * Class DriverGpeasyTest
+ * Class UtilsCopyrightsTest
  * @package JBZoo\PHPUnit
- * @SuppressWarnings(PHPMD.Superglobals)
  */
-class DriverGpeasyTest extends AbstractLessTest
+class LessCopyrightsTest extends AbstractCodestyleTest
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->driver = 'gpeasy';
-        $this->expectedPath = 'gpeasy';
-    }
+
 }

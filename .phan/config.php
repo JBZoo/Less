@@ -13,19 +13,14 @@
  * @link       https://github.com/JBZoo/Less
  */
 
-namespace JBZoo\PHPUnit;
+$default = include __DIR__ . '/../vendor/jbzoo/codestyle/src/phan/default.php';
 
-/**
- * Class DriverGpeasyTest
- * @package JBZoo\PHPUnit
- * @SuppressWarnings(PHPMD.Superglobals)
- */
-class DriverGpeasyTest extends AbstractLessTest
-{
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->driver = 'gpeasy';
-        $this->expectedPath = 'gpeasy';
-    }
-}
+return array_merge($default, [
+    'directory_list' => [
+        'src',
+
+        'vendor/jbzoo/data',
+        'vendor/jbzoo/utils',
+        'vendor/wikimedia/less.php',
+    ]
+]);

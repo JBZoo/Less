@@ -7,25 +7,23 @@
         "less", "css", "less.js", "stylesheet",
         "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler"
     ],
-    "minimum-stability" : "stable",
     "authors"           : [
         {
-            "name"  : "SmetDenis",
-            "email" : "denis@jbzoo.com",
+            "name"  : "Denis Smetannikov",
+            "email" : "admin@jbzoo.com",
             "role"  : "lead"
         }
     ],
 
     "require"           : {
-        "php"                : ">=7.1",
-        "jbzoo/data"         : "^3.0",
-        "jbzoo/utils"        : "^3.0",
-        "wikimedia/less.php" : "^2.0.0"
+        "php"                : ">=7.2",
+        "jbzoo/data"         : "4.0.x-dev",
+        "jbzoo/utils"        : "4.0.x-dev",
+        "wikimedia/less.php" : "^3.0.0"
     },
 
     "require-dev"       : {
-        "jbzoo/phpunit"  : "^3.0",
-        "jbzoo/profiler" : "^1.0.5"
+        "jbzoo/toolbox-dev" : "1.1.x-dev"
     },
 
     "autoload"          : {
@@ -34,11 +32,20 @@
         }
     },
 
+    "minimum-stability" : "dev",
+    "prefer-stable"     : true,
+
+    "autoload-dev"      : {
+        "classmap" : ["tests"]
+    },
+
     "config"            : {
         "optimize-autoloader" : true
     },
 
-    "support"           : {
-        "issues" : "https://github.com/JBZoo/Less/issues"
+    "extra"             : {
+        "branch-alias" : {
+            "dev-master" : "3.0.x-dev"
+        }
     }
 }

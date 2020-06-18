@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo Less
+ * JBZoo Toolbox - Less
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -15,6 +16,7 @@
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
+use JBZoo\Utils\Dates;
 use JBZoo\Utils\Filter;
 use JBZoo\Utils\FS;
 use JBZoo\Utils\Slug;
@@ -30,27 +32,27 @@ class Cache
     /**
      * @var int
      */
-    protected $cacheTtl = 2592000; // 30 days
+    protected $cacheTtl = Dates::MONTH;
 
     /**
      * @var string
      */
-    protected $hash;
+    protected $hash = '';
 
     /**
      * @var string
      */
-    protected $base;
+    protected $basePath = '';
 
     /**
      * @var string
      */
-    protected $resultFile;
+    protected $resultFile = '';
 
     /**
      * @var string
      */
-    protected $less;
+    protected $lessFilepath = '';
 
     /**
      * @var Data
@@ -72,8 +74,13 @@ class Cache
      */
     public function setFile($lessFile, $basePath): void
     {
-        $this->less = FS::real($lessFile);
-        $this->base = FS::clean($basePath);
+        $lessFilepath = FS::real($lessFile);
+        if (!$lessFilepath) {
+            throw new Exception("File '{$lessFile}' not found");
+        }
+
+        $this->lessFilepath = $lessFilepath;
+        $this->basePath = FS::clean($basePath);
 
         $this->hash = $this->getHash();
         $this->resultFile = $this->getResultFile();
@@ -89,12 +96,14 @@ class Cache
             return true;
         }
 
-        $fileAge = abs(time() - filemtime($this->resultFile));
+        $fileAge = (int)(time() - filemtime($this->resultFile));
+        $fileAge = abs($fileAge);
+
         if ($fileAge >= $this->cacheTtl) {
             return true;
         }
 
-        $firstLine = trim(FS::firstLine($this->resultFile));
+        $firstLine = trim((string)FS::firstLine($this->resultFile));
         $expected = trim($this->getHeader());
 
         return $expected !== $firstLine;
@@ -105,15 +114,19 @@ class Cache
      */
     protected function getResultFile()
     {
-        $relPath = FS::getRelative($this->less, $this->options->get('root_path'));
+        $relPath = FS::getRelative($this->lessFilepath, $this->options->get('root_path'));
 
         // Normalize relative path
         $relPath = Slug::filter($relPath, '_');
         $relPath = Str::low($relPath);
 
         // Get full clean path
-        $fullPath = FS::real($this->options->get('cache_path')) . '/' . $relPath . '.css';
-        $fullPath = FS::clean($fullPath);
+        if ($cacheBasePath = FS::real($this->options->get('cache_path'))) {
+            $fullPath = "{$cacheBasePath}/{$relPath}.css";
+            $fullPath = FS::clean($fullPath);
+        } else {
+            throw new Exception('Cache directory is not found');
+        }
 
         return $fullPath;
     }
@@ -136,9 +149,9 @@ class Cache
         ksort($options);
 
         $hashed = [
-            'less'     => $this->less,
-            'less_md5' => md5_file($this->less),
-            'base'     => $this->base,
+            'less'     => $this->lessFilepath,
+            'less_md5' => md5_file($this->lessFilepath),
+            'base'     => $this->basePath,
             'mixins'   => $hashes,
             'options'  => $options,
         ];
@@ -153,7 +166,7 @@ class Cache
      */
     protected function getHeader()
     {
-        return '/* cache-id:' . $this->hash . ' */' . PHP_EOL;
+        return "/* cache-id:{$this->hash} */\n";
     }
 
     /**
@@ -186,7 +199,7 @@ class Cache
     public function setCacheTTL($newTTL): void
     {
         $newTTL = Filter::int($newTTL);
-        $newTTL = Vars::limit($newTTL, 1, 86400 * 365);
+        $newTTL = Vars::limit($newTTL, 1, Dates::YEAR);
 
         $this->cacheTtl = $newTTL;
     }

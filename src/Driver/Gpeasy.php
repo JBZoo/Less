@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo Less
+ * JBZoo Toolbox - Less
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -14,6 +15,7 @@
 
 namespace JBZoo\Less\Driver;
 
+use JBZoo\Data\Data;
 use JBZoo\Less\Exception;
 use JBZoo\Utils\FS;
 use Less_Exception_Parser;
@@ -23,7 +25,7 @@ use Less_Parser;
  * Class Gpeasy
  * @package JBZoo\Less
  */
-class Gpeasy extends Driver
+class Gpeasy
 {
     /**
      * @var Less_Parser|null
@@ -31,15 +33,66 @@ class Gpeasy extends Driver
     protected $compiler;
 
     /**
-     * {@inheritdoc}
+     * @var Data
+     */
+    protected $options;
+
+    /**
+     * @param Data $options
+     */
+    public function __construct(Data $options)
+    {
+        $this->options = $options;
+        $this->compiler = $this->initCompiler();
+
+        // Set paths
+        $importPaths = (array)$this->options->get('import_paths', []);
+        foreach ($importPaths as $fullPath => $relPath) {
+            $this->setImportPath($fullPath, $relPath);
+        }
+    }
+
+
+    /**
+     * @param string $fullPath
+     * @param string $relPath
+     * @return string
+     */
+    public function compile($fullPath, $relPath)
+    {
+        $fullPath = FS::real($fullPath);
+        if (!$fullPath) {
+            throw new Exception("File '{$fullPath}' not found");
+        }
+
+        return $this->compileFile($fullPath, $relPath);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isDebug()
+    {
+        return $this->options->get('debug', false, 'bool');
+    }
+
+    /**
+     * @param string $fullPath
+     * @param string $relPath
+     * @return string
+     * @throws Less_Exception_Parser
      */
     protected function compileFile($fullPath, $relPath)
     {
         $this->initCompiler();
 
-        $this->compiler->parseFile($fullPath, $relPath);
+        if ($this->compiler) {
+            $this->compiler->parseFile($fullPath, $relPath);
 
-        return $this->compiler->getCss();
+            return $this->compiler->getCss();
+        }
+
+        throw new Exception('Less processor is not initialized');
     }
 
     /**
@@ -70,40 +123,33 @@ class Gpeasy extends Driver
         }
 
         // Create compiler
-        $this->compiler = new Less_Parser($options);
-        $this->compiler->Reset();
+        $compiler = new Less_Parser($options);
+        $compiler->Reset();
 
         // Global depends
         $mixins = $this->options->get('autoload');
         foreach ($mixins as $mixin) {
-            $this->compiler->parseFile($mixin);
+            $compiler->parseFile($mixin);
         }
 
         // Add custom vars
-        $this->compiler->ModifyVars((array)$this->options->get('global_vars', []));
-
-        // Set paths
-        $importPaths = (array)$this->options->get('import_paths', []);
-        foreach ($importPaths as $fullPath => $relPath) {
-            $this->setImportPath($fullPath, $relPath);
-        }
+        $compiler->ModifyVars((array)$this->options->get('global_vars', []));
 
         // Set custom functions
         $functions = (array)$this->options->get('functions', [], 'arr');
         foreach ($functions as $name => $function) {
-            $this->compiler->registerFunction($name, $function);
+            $compiler->registerFunction($name, $function);
         }
 
-        return $this->compiler;
+        return $compiler;
     }
 
     /**
-     * {@inheritdoc}
+     * @param string      $fullPath
+     * @param string|null $relPath
      */
     public function setImportPath($fullPath, $relPath = null): void
     {
-        $this->initCompiler();
-
         $relPath = $relPath ?: $this->options->get('root_url');
 
         if (!FS::isDir($fullPath)) {
@@ -114,6 +160,10 @@ class Gpeasy extends Driver
 
         $importPaths[$fullPath] = $relPath;
 
-        $this->compiler->SetImportDirs($importPaths);
+        if ($this->compiler) {
+            $this->compiler->SetImportDirs($importPaths);
+        } else {
+            throw new Exception('Less processor is not initialized');
+        }
     }
 }

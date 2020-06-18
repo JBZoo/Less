@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo Less
+ * JBZoo Toolbox - Less
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -15,7 +16,7 @@
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
-use JBZoo\Less\Driver\Driver;
+use JBZoo\Less\Driver\Gpeasy;
 use JBZoo\Utils\FS;
 use JBZoo\Utils\Sys;
 use JBZoo\Utils\Url;
@@ -31,7 +32,6 @@ class Less
      * @var array
      */
     protected $default = [
-        'driver'       => 'gpeasy', // Recommended
         'force'        => false,
         'debug'        => false,    // On/Off Source map for browser debug console
         'root_url'     => null,
@@ -50,7 +50,7 @@ class Less
     protected $options;
 
     /**
-     * @var Driver
+     * @var Gpeasy
      */
     protected $driver;
 
@@ -61,14 +61,7 @@ class Less
     public function __construct(array $options = [])
     {
         $this->options = $this->prepareOptions($options);
-        $driverName = $this->options->get('driver');
-
-        $driverClass = __NAMESPACE__ . '\\Driver\\' . $driverName;
-        if (!class_exists($driverClass)) {
-            throw new Exception('Undefined driver: ' . $driverName);
-        }
-
-        $this->driver = new $driverClass($this->options);
+        $this->driver = new Gpeasy($this->options);
     }
 
     /**
@@ -86,7 +79,7 @@ class Less
         $options = array_merge($this->default, $options);
 
         // Check cache directory
-        $cachePath = FS::clean($options['cache_path']);
+        $cachePath = FS::clean((string)$options['cache_path']);
         if (!$cachePath) {
             throw new Exception('Option "cache_path" is empty!');
         }
@@ -96,9 +89,9 @@ class Less
         }
 
         $options['cache_path'] = FS::real($cachePath);
-        $options['root_url'] = rtrim($options['root_url'], '/');
-        $options['root_path'] = FS::real($options['root_path']);
-        $options['driver'] = ucfirst(strtolower(trim($options['driver'])));
+
+        $rootUrl = $options['root_url'] ?? '';
+        $options['root_url'] = (string)rtrim((string)$rootUrl, '/');
 
         // Check mixin paths
         $lessFile = (array)$options['autoload'];
@@ -114,7 +107,7 @@ class Less
                 $importPaths[$cleanPath] = $uri;
             }
         }
-        $importPaths[$options['root_path']] = $options['root_url']; // Forced add root path in the end of list!
+        $importPaths[(string)$options['root_path']] = $options['root_url']; // Forced add root path in the end of list!
 
         $options['import_paths'] = array_filter($importPaths);
 
@@ -160,9 +153,9 @@ class Less
             }
 
             $cssPath = $cache->getFile();
-        } catch (\Exception $e) { // Rewrite exception type
-            $message = 'JBZoo/Less: ' . $e->getMessage();
-            $trace = $e->getTraceAsString();
+        } catch (\Exception $exception) { // Rewrite exception type
+            $message = 'JBZoo/Less: ' . $exception->getMessage();
+            $trace = $exception->getTraceAsString();
 
             throw new Exception($message . PHP_EOL . $trace);
         }

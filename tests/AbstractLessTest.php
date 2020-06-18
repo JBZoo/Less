@@ -1,8 +1,9 @@
 <?php
+
 /**
- * JBZoo Less
+ * JBZoo Toolbox - Less
  *
- * This file is part of the JBZoo CCK package.
+ * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -27,6 +28,11 @@ abstract class AbstractLessTest extends PHPUnit
     protected $driver       = '';
     protected $expectedPath = '';
 
+    /**
+     * @var Less
+     */
+    protected $less;
+
     protected function setUp(): void
     {
         $_SERVER['HTTP_HOST'] = 'example.com';
@@ -36,16 +42,9 @@ abstract class AbstractLessTest extends PHPUnit
         FS::rmDir(PROJECT_ROOT . '/tests/cache');
     }
 
-    public function testUndefinedDriver()
-    {
-        $this->expectException(\JBZoo\Less\Exception::class);
-
-        (new Less(['driver' => 'undefined']));
-    }
-
     public function testCompileSimple()
     {
-        $less = new Less(['driver' => $this->driver]);
+        $less = new Less();
 
         $actual = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/simple.css';
@@ -57,7 +56,7 @@ abstract class AbstractLessTest extends PHPUnit
     {
         $this->expectException(\JBZoo\Less\Exception::class);
 
-        $less = new Less(['driver' => $this->driver]);
+        $less = new Less();
         $less->compile('tests/resources/invalid.less');
     }
 
@@ -65,7 +64,7 @@ abstract class AbstractLessTest extends PHPUnit
     {
         $this->expectException(\JBZoo\Less\Exception::class);
 
-        $less = new Less(['driver' => $this->driver]);
+        $less = new Less();
         $less->compile('tests/resources/undefined.less');
     }
 
@@ -74,7 +73,6 @@ abstract class AbstractLessTest extends PHPUnit
         $uniqCacheFolder = uniqid('', true);
 
         $less = new Less([
-            'driver'     => $this->driver,
             'cache_path' => PROJECT_ROOT . '/tests/cache/' . $uniqCacheFolder,
         ]);
 
@@ -88,27 +86,27 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testCustomRootUrl()
     {
-        $less = new Less(['driver' => $this->driver, 'root_url' => '//custom-site.com/']);
+        $less = new Less(['root_url' => '//custom-site.com/']);
         $actual = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['driver' => $this->driver, 'root_url' => 'http://custom-site.com/']);
+        $less = new Less(['root_url' => 'http://custom-site.com/']);
         $actual = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_http.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['driver' => $this->driver, 'root_url' => 'https://custom-site.com/']);
+        $less = new Less(['root_url' => 'https://custom-site.com/']);
         $actual = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_https.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['driver' => $this->driver, 'root_url' => '.']);
+        $less = new Less(['root_url' => '.']);
         $actual = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_dot.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['driver' => $this->driver, 'root_url' => '../../path/']);
+        $less = new Less(['root_url' => '../../path/']);
         $actual = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_complex.css';
         $this->isFileEq($expected, $actual);
@@ -116,7 +114,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testForceOff()
     {
-        $less = new Less(['driver' => $this->driver, 'force' => 0]);
+        $less = new Less(['force' => 0]);
         $path = $less->compile('tests/resources/simple.less');
         clearstatcache(false, $path);
         $mtimeExpected = filemtime($path);
@@ -132,7 +130,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testForceOn()
     {
-        $less = new Less(['driver' => $this->driver, 'force' => 1]);
+        $less = new Less(['force' => 1]);
         $path = $less->compile('tests/resources/simple.less');
         clearstatcache(false, $path);
         $mtimeExpected = filemtime($path);
@@ -149,7 +147,6 @@ abstract class AbstractLessTest extends PHPUnit
     public function testVars()
     {
         $less = new Less([
-            'driver'      => $this->driver,
             'global_vars' => [
                 'red'   => '#f00',
                 'green' => '#0f0',
@@ -166,7 +163,6 @@ abstract class AbstractLessTest extends PHPUnit
     public function testMixins()
     {
         $less = new Less([
-            'driver'   => $this->driver,
             'autoload' => [
                 PROJECT_ROOT . '/tests/resources/autoload-1.less',
                 PROJECT_ROOT . '/tests/resources/autoload-2.less',
@@ -183,7 +179,6 @@ abstract class AbstractLessTest extends PHPUnit
     public function testNestedImportPaths()
     {
         $less = new Less([
-            'driver'       => $this->driver,
             'import_paths' => [
                 PROJECT_ROOT . '/tests/resources/imported_2' => 'http://example.com/tests/resources/imported_2',
             ],
@@ -197,7 +192,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testImportPathsExternalMethod()
     {
-        $less = new Less(['driver' => $this->driver]);
+        $less = new Less();
 
         $less->setImportPath(
             PROJECT_ROOT . '/tests/resources/imported_2',
@@ -214,13 +209,13 @@ abstract class AbstractLessTest extends PHPUnit
     {
         $this->expectException(\JBZoo\Less\Exception::class);
 
-        $less = new Less(['driver' => $this->driver]);
+        $less = new Less();
         $less->setImportPath(PROJECT_ROOT . '/undefined/12356');
     }
 
     public function testDebugOn()
     {
-        $less = new Less(['driver' => $this->driver, 'debug' => true]);
+        $less = new Less(['debug' => true]);
 
         $actual = $less->compile('tests/resources/simple.less');
         $content = file_get_contents($actual);
@@ -229,13 +224,13 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testDebugOff()
     {
-        $less = new Less(['driver' => $this->driver]);
+        $less = new Less();
         $actual = $less->compile('tests/resources/simple.less');
         $content = file_get_contents($actual);
         isNotContain('sourceMappingURL=data:application/json', $content);
 
         $this->setUp();
-        $less = new Less(['driver' => $this->driver, 'debug' => false]);
+        $less = new Less(['debug' => false]);
         $actual = $less->compile('tests/resources/simple.less');
         $content = file_get_contents($actual);
         isNotContain('sourceMappingURL=data:application/json', $content);
@@ -243,7 +238,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testSetCacheTTL()
     {
-        $less = new Less(['driver' => $this->driver, 'cache_ttl' => 1]);
+        $less = new Less(['cache_ttl' => 1]);
 
         $path = $less->compile('tests/resources/simple.less');
         clearstatcache(false, $path);
@@ -261,7 +256,6 @@ abstract class AbstractLessTest extends PHPUnit
     public function testCustomFunction()
     {
         $less = new Less([
-            'driver'    => $this->driver,
             'functions' => [
                 'str-revert' => function ($arg) {
                     $arg->value = strrev($arg->value);
