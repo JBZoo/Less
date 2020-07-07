@@ -13,10 +13,9 @@
  * @link       https://github.com/JBZoo/Less
  */
 
-namespace JBZoo\Less\Driver;
+namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
-use JBZoo\Less\Exception;
 use JBZoo\Utils\FS;
 use Less_Exception_Parser;
 use Less_Parser;
@@ -58,7 +57,7 @@ class Gpeasy
      * @param string $relPath
      * @return string
      */
-    public function compile($fullPath, $relPath)
+    public function compile(string $fullPath, string $relPath): string
     {
         $fullPath = FS::real($fullPath);
         if (!$fullPath) {
@@ -71,9 +70,9 @@ class Gpeasy
     /**
      * @return bool
      */
-    protected function isDebug()
+    protected function isDebug(): bool
     {
-        return $this->options->get('debug', false, 'bool');
+        return (bool)$this->options->get('debug', false, 'bool');
     }
 
     /**
@@ -82,7 +81,7 @@ class Gpeasy
      * @return string
      * @throws Less_Exception_Parser
      */
-    protected function compileFile($fullPath, $relPath)
+    protected function compileFile(string $fullPath, string $relPath): string
     {
         $this->initCompiler();
 
@@ -100,7 +99,7 @@ class Gpeasy
      * @throws Exception
      * @throws Less_Exception_Parser
      */
-    protected function initCompiler()
+    protected function initCompiler(): Less_Parser
     {
         if ($this->compiler) {
             return $this->compiler;
@@ -148,7 +147,7 @@ class Gpeasy
      * @param string      $fullPath
      * @param string|null $relPath
      */
-    public function setImportPath($fullPath, $relPath = null): void
+    public function setImportPath(string $fullPath, ?string $relPath = null): void
     {
         $relPath = $relPath ?: $this->options->get('root_url');
 

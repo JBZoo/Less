@@ -16,7 +16,6 @@
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
-use JBZoo\Less\Driver\Gpeasy;
 use JBZoo\Utils\FS;
 use JBZoo\Utils\Sys;
 use JBZoo\Utils\Url;
@@ -70,7 +69,7 @@ class Less
      * @throws Exception
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected function prepareOptions(array $options)
+    protected function prepareOptions(array $options): Data
     {
         // Default data for current system
         $this->default['root_url'] = Url::root();
@@ -119,7 +118,7 @@ class Less
      * @param string      $default
      * @return string
      */
-    protected function prepareBasePath($basePath, $default)
+    protected function prepareBasePath(?string $basePath, string $default): string
     {
         $basePath = $basePath ?: $default;
 
@@ -132,12 +131,12 @@ class Less
     }
 
     /**
-     * @param string $lessFile
-     * @param string $basePath
+     * @param string      $lessFile
+     * @param string|null $basePath
      * @return string
      * @throws Exception
      */
-    public function compile($lessFile, $basePath = null)
+    public function compile(string $lessFile, ?string $basePath = null): string
     {
         try {
             $basePath = $this->prepareBasePath($basePath, dirname($lessFile));
@@ -168,7 +167,7 @@ class Less
      * @param string|null $relPath
      * @throws Exception
      */
-    public function setImportPath($fullPath, $relPath = null): void
+    public function setImportPath(string $fullPath, ?string $relPath = null): void
     {
         $relPath = $relPath ?: $this->options->get('root_url');
         $this->driver->setImportPath($fullPath, $relPath);

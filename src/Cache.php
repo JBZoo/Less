@@ -72,7 +72,7 @@ class Cache
      * @param string $lessFile
      * @param string $basePath
      */
-    public function setFile($lessFile, $basePath): void
+    public function setFile(string $lessFile, string $basePath): void
     {
         $lessFilepath = FS::real($lessFile);
         if (!$lessFilepath) {
@@ -90,7 +90,7 @@ class Cache
      * Check is current cache is expired
      * @return bool
      */
-    public function isExpired()
+    public function isExpired(): bool
     {
         if (!FS::isFile($this->resultFile)) {
             return true;
@@ -112,7 +112,7 @@ class Cache
     /**
      * @return string
      */
-    protected function getResultFile()
+    protected function getResultFile(): string
     {
         $relPath = FS::getRelative($this->lessFilepath, $this->options->get('root_path'));
 
@@ -134,7 +134,7 @@ class Cache
     /**
      * @return string
      */
-    protected function getHash()
+    protected function getHash(): string
     {
         // Check depends
         $mixins = $this->options->get('autoload', [], 'arr');
@@ -164,7 +164,7 @@ class Cache
     /**
      * @return string
      */
-    protected function getHeader()
+    protected function getHeader(): string
     {
         return "/* cache-id:{$this->hash} */\n";
     }
@@ -175,7 +175,7 @@ class Cache
      * @param string $content
      * @throws Exception
      */
-    public function save($content): void
+    public function save(string $content): void
     {
         $content = $this->getHeader() . $content;
         $result = file_put_contents($this->resultFile, $content);
@@ -188,7 +188,7 @@ class Cache
     /**
      * @return string
      */
-    public function getFile()
+    public function getFile(): string
     {
         return $this->resultFile;
     }
@@ -196,7 +196,7 @@ class Cache
     /**
      * @param int $newTTL In seconds (1 to 365 days)
      */
-    public function setCacheTTL($newTTL): void
+    public function setCacheTTL(int $newTTL): void
     {
         $newTTL = Filter::int($newTTL);
         $newTTL = Vars::limit($newTTL, 1, Dates::YEAR);
