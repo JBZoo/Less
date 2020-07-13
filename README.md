@@ -75,7 +75,7 @@ try { // Any error handling
 
 ## Unit tests and check code style
 ```sh
-make
+make update
 make test-all
 ```
 
