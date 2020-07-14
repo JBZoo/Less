@@ -16,10 +16,10 @@
 namespace JBZoo\PHPUnit;
 
 /**
- * Class LessCopyrightsTest
+ * Class LessComposerTest
  * @package JBZoo\PHPUnit
  */
-class LessCopyrightsTest extends AbstractCodestyleTest
+class LessComposerTest extends AbstractComposerTest
 {
 
 }

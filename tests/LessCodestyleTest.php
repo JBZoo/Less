@@ -16,7 +16,7 @@
 namespace JBZoo\PHPUnit;
 
 /**
- * Class UtilsCodestyleTest
+ * Class LessCodestyleTest
  * @package JBZoo\PHPUnit
  */
 class LessCodestyleTest extends AbstractCopyrightTest

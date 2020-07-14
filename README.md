@@ -1,7 +1,8 @@
 # JBZoo / Less
 
 [![Build Status](https://travis-ci.org/JBZoo/Less.svg?branch=master)](https://travis-ci.org/JBZoo/Less)    [![Coverage Status](https://coveralls.io/repos/JBZoo/Less/badge.svg)](https://coveralls.io/github/JBZoo/Less?branch=master)    [![Psalm Coverage](https://shepherd.dev/github/JBZoo/Less/coverage.svg)](https://shepherd.dev/github/JBZoo/Less)    
-[![Latest Stable Version](https://poser.pugx.org/JBZoo/Less/v)](https://packagist.org/packages/JBZoo/Less)    [![Latest Unstable Version](https://poser.pugx.org/JBZoo/Less/v/unstable)](https://packagist.org/packages/JBZoo/Less)    [![Dependents](https://poser.pugx.org/JBZoo/Less/dependents)](https://packagist.org/packages/JBZoo/Less/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/JBZoo/Less)](https://github.com/JBZoo/Less/issues)    [![Total Downloads](https://poser.pugx.org/JBZoo/Less/downloads)](https://packagist.org/packages/JBZoo/Less/stats)    [![GitHub License](https://img.shields.io/github/license/JBZoo/Less)](https://github.com/JBZoo/Less/blob/master/LICENSE)
+[![Stable Version](https://poser.pugx.org/jbzoo/less/version)](https://packagist.org/packages/jbzoo/less)    [![Latest Unstable Version](https://poser.pugx.org/jbzoo/less/v/unstable)](https://packagist.org/packages/jbzoo/less)    [![Dependents](https://poser.pugx.org/jbzoo/less/dependents)](https://packagist.org/packages/jbzoo/less/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/jbzoo/less)](https://github.com/JBZoo/Less/issues)    [![Total Downloads](https://poser.pugx.org/jbzoo/less/downloads)](https://packagist.org/packages/jbzoo/less/stats)    [![GitHub License](https://img.shields.io/github/license/jbzoo/less)](https://github.com/JBZoo/Less/blob/master/LICENSE)
+
 
 
 PHP wrapper for [wikimedia/less.php](https://github.com/wikimedia/less.php). 
@@ -20,7 +21,6 @@ try { // Any error handling
 
     // There is not option required
     $less = new Less([
-        'driver'       => 'gpeasy',                 // Compiler's Driver
         'force'        => false,                    // Can forced compile on each compile() calling
         'debug'        => false,                    // On/Off Source map for browser debug console
 
