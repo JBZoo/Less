@@ -4,22 +4,16 @@
 [![Latest Stable Version](https://poser.pugx.org/JBZoo/Less/v)](https://packagist.org/packages/JBZoo/Less)    [![Latest Unstable Version](https://poser.pugx.org/JBZoo/Less/v/unstable)](https://packagist.org/packages/JBZoo/Less)    [![Dependents](https://poser.pugx.org/JBZoo/Less/dependents)](https://packagist.org/packages/JBZoo/Less/dependents?order_by=downloads)    [![GitHub Issues](https://img.shields.io/github/issues/JBZoo/Less)](https://github.com/JBZoo/Less/issues)    [![Total Downloads](https://poser.pugx.org/JBZoo/Less/downloads)](https://packagist.org/packages/JBZoo/Less/stats)    [![GitHub License](https://img.shields.io/github/license/JBZoo/Less)](https://github.com/JBZoo/Less/blob/master/LICENSE)
 
 
-
-PHP wrapper for any less-compilers. Now recommended to use [oyejorge/less.php](https://github.com/oyejorge/less.php)
+PHP wrapper for [wikimedia/less.php](https://github.com/wikimedia/less.php). 
 
 
 ## Install
 ```sh
-composer require jbzoo/less                 # Stable version
-composer require oyejorge/less.php:"^1.7"   # Package for Gpeasy driver
+composer require jbzoo/less
 ```
 
 ## Usage
 ```php
-<?php
-require_once './vendor/autoload.php'; // composer autoload.php
-
-// Get needed classes
 use JBZoo\Less\Less;
 
 try { // Any error handling
@@ -81,7 +75,7 @@ try { // Any error handling
 
 ## Unit tests and check code style
 ```sh
-make
+make update
 make test-all
 ```
 
