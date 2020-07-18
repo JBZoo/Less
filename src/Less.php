@@ -90,7 +90,7 @@ class Less
         $options['cache_path'] = FS::real($cachePath);
 
         $rootUrl = $options['root_url'] ?? '';
-        $options['root_url'] = (string)rtrim((string)$rootUrl, '/');
+        $options['root_url'] = rtrim((string)$rootUrl, '/');
 
         // Check mixin paths
         $lessFile = (array)$options['autoload'];
