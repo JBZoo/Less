@@ -13,13 +13,15 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\PHPUnit;
 
 /**
- * Class LessCopyrightsTest
+ * Class LessCodestyleTest
  * @package JBZoo\PHPUnit
  */
-class LessCopyrightsTest extends AbstractCodestyleTest
+class LessCodestyleTest extends AbstractCodestyleTest
 {
 
 }

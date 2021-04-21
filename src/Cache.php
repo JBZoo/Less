@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
@@ -27,7 +29,7 @@ use JBZoo\Utils\Vars;
  * Class Cache
  * @package JBZoo\Less
  */
-class Cache
+final class Cache
 {
     /**
      * @var int

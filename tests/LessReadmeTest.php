@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\PHPUnit;
 
 /**
@@ -23,4 +25,10 @@ namespace JBZoo\PHPUnit;
 class LessReadmeTest extends AbstractReadmeTest
 {
     protected $packageName = 'Less';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->params['strict_types'] = true;
+    }
 }
