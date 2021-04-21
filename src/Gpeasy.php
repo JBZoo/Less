@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
@@ -24,7 +26,7 @@ use Less_Parser;
  * Class Gpeasy
  * @package JBZoo\Less
  */
-class Gpeasy
+final class Gpeasy
 {
     /**
      * @var Less_Parser|null

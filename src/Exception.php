@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\Less;
 
 /**

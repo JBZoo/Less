@@ -13,6 +13,8 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
@@ -25,7 +27,7 @@ use RuntimeException;
  * Class Less
  * @package JBZoo\Less
  */
-class Less
+final class Less
 {
     /**
      * @var array

@@ -13,15 +13,18 @@
  * @link       https://github.com/JBZoo/Less
  */
 
+declare(strict_types=1);
+
 namespace JBZoo\PHPUnit;
 
 /**
  * Class LessCodestyleTest
  * @package JBZoo\PHPUnit
  */
-class LessCodestyleTest extends AbstractCopyrightTest
+class LessCopyrightTest extends AbstractCopyrightTest
 {
-    protected $packageName = "Less";
+    protected $packageName     = "Less";
+    protected $isPhpStrictType = true;
 
     protected function setUp(): void
     {
