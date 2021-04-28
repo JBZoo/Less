@@ -1,13 +1,13 @@
 {
-    "name"              : "jbzoo/less",
-    "type"              : "library",
-    "description"       : "PHP wrapper for any less-compilers",
-    "license"           : "MIT",
-    "keywords"          : [
+    "name"         : "jbzoo/less",
+    "type"         : "library",
+    "description"  : "PHP wrapper for any less-compilers",
+    "license"      : "MIT",
+    "keywords"     : [
         "less", "css", "less.js", "stylesheet",
         "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler"
     ],
-    "authors"           : [
+    "authors"      : [
         {
             "name"  : "Denis Smetannikov",
             "email" : "admin@jbzoo.com",
@@ -15,36 +15,33 @@
         }
     ],
 
-    "require"           : {
+    "require"      : {
         "php"                : ">=7.2",
 
-        "jbzoo/data"         : "^4.2.0",
-        "jbzoo/utils"        : "^4.3.0",
+        "jbzoo/data"         : "^4.3.0",
+        "jbzoo/utils"        : "^4.5.0",
         "wikimedia/less.php" : "^3.1.0"
     },
 
-    "require-dev"       : {
-        "jbzoo/toolbox-dev" : "^2.10.0"
+    "require-dev"  : {
+        "jbzoo/toolbox-dev" : "^2.13.1"
     },
 
-    "autoload"          : {
+    "autoload"     : {
         "psr-4" : {
             "JBZoo\\Less\\" : "src"
         }
     },
 
-    "minimum-stability" : "dev",
-    "prefer-stable"     : true,
-
-    "autoload-dev"      : {
+    "autoload-dev" : {
         "classmap" : ["tests"]
     },
 
-    "config"            : {
+    "config"       : {
         "optimize-autoloader" : true
     },
 
-    "extra"             : {
+    "extra"        : {
         "branch-alias" : {
             "dev-master" : "4.x-dev"
         }
