@@ -16,7 +16,7 @@
 declare(strict_types=1);
 
 if (version_compare(PHP_VERSION, '8.0') >= 0 && getenv('CI_TRAVIS')) {
-    echo "Doesn't compatible with PHP 8.0 in travis. Needs ext-ast.s See GitHub Actions =(";
+    echo "Doesn't compatible with PHP 8.0 in travis. Needs PHP ext-ast. See GitHub Actions =( instead";
     die(0);
 }
 
