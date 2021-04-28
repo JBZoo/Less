@@ -15,7 +15,12 @@
 
 declare(strict_types=1);
 
-$default = include __DIR__ . '/../vendor/jbzoo/codestyle/src/phan/default.php';
+if (version_compare(PHP_VERSION, '8.0') >= 0 && getenv('CI_TRAVIS')) {
+    echo "Doesn't compatible with PHP 8.0 in travis. Needs PHP ext-ast. See GitHub Actions =( instead";
+    die(0);
+}
+
+$default = include __DIR__ . '/vendor/jbzoo/codestyle/src/phan/default.php';
 
 return array_merge($default, [
     'directory_list' => [
