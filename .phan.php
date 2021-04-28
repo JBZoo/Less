@@ -15,10 +15,10 @@
 
 declare(strict_types=1);
 
-//if (version_compare(PHP_VERSION, '8.0') >= 0) {
-//    echo "Doesn't compatible with PHP 8.0 =(";
-//    die(0);
-//}
+if (version_compare(PHP_VERSION, '8.0') >= 0 && getenv('CI_TRAVIS')) {
+    echo "Doesn't compatible with PHP 8.0 in travis. Needs ext-ast.s See GitHub Actions =(";
+    die(0);
+}
 
 $default = include __DIR__ . '/vendor/jbzoo/codestyle/src/phan/default.php';
 
