@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 $default = include __DIR__ . '/vendor/jbzoo/codestyle/src/phan/default.php';
 
-return array_merge($default, [
+$phanConfig = array_merge($default, [
     'directory_list' => [
         'src',
 
@@ -30,3 +30,9 @@ return array_merge($default, [
         'vendor/wikimedia/less.php/lib/Less/Parser.php',
     ]
 ]);
+
+$phanConfig['plugins'] = array_filter($phanConfig['plugins'], function ($plugin) {
+    return $plugin !== 'UnusedSuppressionPlugin';
+});
+
+return $phanConfig;
