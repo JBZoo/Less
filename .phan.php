@@ -15,11 +15,6 @@
 
 declare(strict_types=1);
 
-if (version_compare(PHP_VERSION, '8.0') >= 0 && getenv('CI_TRAVIS')) {
-    echo "Doesn't compatible with PHP 8.0 in travis. Needs PHP ext-ast. See GitHub Actions =( instead";
-    die(0);
-}
-
 $default = include __DIR__ . '/vendor/jbzoo/codestyle/src/phan/default.php';
 
 return array_merge($default, [
@@ -28,6 +23,10 @@ return array_merge($default, [
 
         'vendor/jbzoo/data',
         'vendor/jbzoo/utils',
-        'vendor/wikimedia/less.php',
+        'vendor/wikimedia/less.php/lib/Less',
+    ],
+
+    'file_list' => [
+        'vendor/wikimedia/less.php/lib/Less/Parser.php',
     ]
 ]);

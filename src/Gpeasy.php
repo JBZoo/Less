@@ -30,6 +30,7 @@ final class Gpeasy
 {
     /**
      * @var Less_Parser|null
+     * @phan-suppress PhanUndeclaredTypeProperty
      */
     protected $compiler;
 
@@ -82,6 +83,7 @@ final class Gpeasy
      * @param string $relPath
      * @return string
      * @throws Less_Exception_Parser
+     * @phan-suppress PhanUndeclaredClassMethod
      */
     protected function compileFile(string $fullPath, string $relPath): string
     {
@@ -100,6 +102,8 @@ final class Gpeasy
      * @return Less_Parser
      * @throws Exception
      * @throws Less_Exception_Parser
+     * @phan-suppress PhanUndeclaredTypeReturnType
+     * @phan-suppress PhanUndeclaredClassMethod
      */
     protected function initCompiler(): Less_Parser
     {
@@ -148,6 +152,8 @@ final class Gpeasy
     /**
      * @param string      $fullPath
      * @param string|null $relPath
+     * @phan-suppress PhanUndeclaredClassStaticProperty
+     * @phan-suppress PhanUndeclaredClassMethod
      */
     public function setImportPath(string $fullPath, ?string $relPath = null): void
     {

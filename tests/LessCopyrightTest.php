@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace JBZoo\PHPUnit;
 
 /**
- * Class LessCodestyleTest
+ * Class LessCopyrightTest
  * @package JBZoo\PHPUnit
  */
 class LessCopyrightTest extends AbstractCopyrightTest
