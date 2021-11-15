@@ -132,7 +132,7 @@ final class Gpeasy
         $compiler->Reset();
 
         // Global depends
-        $mixins = $this->options->get('autoload');
+        $mixins = $this->options->getArray('autoload');
         foreach ($mixins as $mixin) {
             $compiler->parseFile($mixin);
         }
@@ -141,7 +141,7 @@ final class Gpeasy
         $compiler->ModifyVars((array)$this->options->get('global_vars', []));
 
         // Set custom functions
-        $functions = (array)$this->options->get('functions', [], 'arr');
+        $functions = $this->options->getArray('functions', []);
         foreach ($functions as $name => $function) {
             $compiler->registerFunction((string)$name, $function);
         }
