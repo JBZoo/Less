@@ -143,7 +143,7 @@ final class Gpeasy
         // Set custom functions
         $functions = (array)$this->options->get('functions', [], 'arr');
         foreach ($functions as $name => $function) {
-            $compiler->registerFunction($name, $function);
+            $compiler->registerFunction((string)$name, $function);
         }
 
         return $compiler;
