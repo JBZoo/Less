@@ -98,15 +98,15 @@ final class Cache
             return true;
         }
 
-        $fileAge = (int)(time() - filemtime($this->resultFile));
-        $fileAge = abs($fileAge);
+        $fileAge = (int)(\time() - \filemtime($this->resultFile));
+        $fileAge = \abs($fileAge);
 
         if ($fileAge >= $this->cacheTtl) {
             return true;
         }
 
-        $firstLine = trim((string)FS::firstLine($this->resultFile));
-        $expected = trim($this->getHeader());
+        $firstLine = \trim((string)FS::firstLine($this->resultFile));
+        $expected = \trim($this->getHeader());
 
         return $expected !== $firstLine;
     }
@@ -142,25 +142,25 @@ final class Cache
         $mixins = $this->options->get('autoload', [], 'arr');
         $hashes = [];
         foreach ($mixins as $mixin) {
-            $hashes[$mixin] = md5_file($mixin);
+            $hashes[$mixin] = \md5_file($mixin);
         }
-        ksort($hashes);
+        \ksort($hashes);
 
         $options = $this->options->getArrayCopy();
-        $options['functions'] = array_keys($options['functions']);
-        ksort($options);
+        $options['functions'] = \array_keys($options['functions']);
+        \ksort($options);
 
         $hashed = [
             'less'     => $this->lessFilepath,
-            'less_md5' => md5_file($this->lessFilepath),
+            'less_md5' => \md5_file($this->lessFilepath),
             'base'     => $this->basePath,
             'mixins'   => $hashes,
             'options'  => $options,
         ];
 
-        $hashed = serialize($hashed);
+        $hashed = \serialize($hashed);
 
-        return md5($hashed); // md5 is faster than sha1!
+        return \md5($hashed); // md5 is faster than sha1!
     }
 
     /**
@@ -180,7 +180,7 @@ final class Cache
     public function save(string $content): void
     {
         $content = $this->getHeader() . $content;
-        $result = file_put_contents($this->resultFile, $content);
+        $result = \file_put_contents($this->resultFile, $content);
 
         if (!$result) {
             throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile);

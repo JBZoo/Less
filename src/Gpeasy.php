@@ -50,7 +50,7 @@ final class Gpeasy
         // Set paths
         $importPaths = (array)$this->options->get('import_paths', []);
         foreach ($importPaths as $fullPath => $relPath) {
-            $this->setImportPath($fullPath, $relPath);
+            $this->setImportPath((string)$fullPath, $relPath);
         }
     }
 

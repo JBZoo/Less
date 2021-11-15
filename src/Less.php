@@ -77,7 +77,7 @@ final class Less
         $this->default['root_url'] = Url::root();
         $this->default['root_path'] = Sys::getDocRoot();
 
-        $options = array_merge($this->default, $options);
+        $options = \array_merge($this->default, $options);
 
         // Check cache directory
         $cachePath = FS::clean((string)$options['cache_path']);
@@ -85,32 +85,32 @@ final class Less
             throw new Exception('Option "cache_path" is empty!');
         }
 
-        if (!FS::isDir($cachePath) && !mkdir($cachePath, 0755, true) && !is_dir($cachePath)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $cachePath));
+        if (!FS::isDir($cachePath) && !\mkdir($cachePath, 0755, true) && !\is_dir($cachePath)) {
+            throw new RuntimeException(\sprintf('Directory "%s" was not created', $cachePath));
         }
 
         $options['cache_path'] = FS::real($cachePath);
 
         $rootUrl = $options['root_url'] ?? '';
-        $options['root_url'] = rtrim((string)$rootUrl, '/');
+        $options['root_url'] = \rtrim((string)$rootUrl, '/');
 
         // Check mixin paths
         $lessFile = (array)$options['autoload'];
         foreach ($lessFile as $key => $mixin) {
             $lessFile[$key] = FS::real($mixin);
         }
-        $options['autoload'] = array_filter($lessFile);
+        $options['autoload'] = \array_filter($lessFile);
 
         // Check imported paths
         $importPaths = [];
         foreach ((array)$options['import_paths'] as $path => $uri) {
-            if ($cleanPath = FS::real($path)) {
+            if ($cleanPath = FS::real((string)$path)) {
                 $importPaths[$cleanPath] = $uri;
             }
         }
         $importPaths[(string)$options['root_path']] = $options['root_url']; // Forced add root path in the end of list!
 
-        $options['import_paths'] = array_filter($importPaths);
+        $options['import_paths'] = \array_filter($importPaths);
 
         return new Data($options);
     }
@@ -125,7 +125,7 @@ final class Less
         $basePath = $basePath ?: $default;
 
         if (!Url::isAbsolute($basePath)) {
-            $basePath = trim($basePath, '\\/');
+            $basePath = \trim($basePath, '\\/');
             $basePath = $this->options->get('root_url') . '/' . $basePath;
         }
 
@@ -141,7 +141,7 @@ final class Less
     public function compile(string $lessFile, ?string $basePath = null): string
     {
         try {
-            $basePath = $this->prepareBasePath($basePath, dirname($lessFile));
+            $basePath = $this->prepareBasePath($basePath, \dirname($lessFile));
 
             $cache = new Cache($this->options);
             $cache->setFile($lessFile, $basePath);
@@ -158,7 +158,7 @@ final class Less
             $message = 'JBZoo/Less: ' . $exception->getMessage();
             $trace = $exception->getTraceAsString();
 
-            throw new Exception($message . PHP_EOL . $trace);
+            throw new Exception($message . \PHP_EOL . $trace);
         }
 
         return $cssPath;
