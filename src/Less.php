@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace JBZoo\Less;
 
 use JBZoo\Data\Data;
+use JBZoo\Utils\Dates;
 use JBZoo\Utils\FS;
 use JBZoo\Utils\Sys;
 use JBZoo\Utils\Url;
@@ -32,7 +33,7 @@ final class Less
     /**
      * @var array
      */
-    protected $default = [
+    protected array $default = [
         'force'        => false,
         'debug'        => false,    // On/Off Source map for browser debug console
         'root_url'     => null,
@@ -42,18 +43,18 @@ final class Less
         'import_paths' => [],
         'functions'    => [],
         'cache_path'   => './cache',
-        'cache_ttl'    => 2592000,  // 30 days
+        'cache_ttl'    => Dates::MONTH,  // 30 days
     ];
 
     /**
      * @var Data
      */
-    protected $options;
+    protected Data $options;
 
     /**
      * @var Gpeasy
      */
-    protected $driver;
+    protected Gpeasy $driver;
 
     /**
      * @param array $options

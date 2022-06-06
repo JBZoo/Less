@@ -27,13 +27,8 @@ use JBZoo\Utils\FS;
  */
 abstract class AbstractLessTest extends PHPUnit
 {
-    protected $driver       = '';
-    protected $expectedPath = '';
-
-    /**
-     * @var Less
-     */
-    protected $less;
+    protected string $driver       = '';
+    protected string $expectedPath = '';
 
     protected function setUp(): void
     {
@@ -277,7 +272,7 @@ abstract class AbstractLessTest extends PHPUnit
      * @param string $expectedFile
      * @param string $actualFile
      */
-    protected function isFileEq($expectedFile, $actualFile)
+    protected function isFileEq(string $expectedFile, string $actualFile)
     {
         $actual = file_get_contents($actualFile);
         $actual = trim(preg_replace('#^(.*)' . PHP_EOL . '#', '', $actual)); // remove first line (cache header)

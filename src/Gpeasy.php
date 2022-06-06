@@ -32,12 +32,12 @@ final class Gpeasy
      * @var Less_Parser|null
      * @phan-suppress PhanUndeclaredTypeProperty
      */
-    protected $compiler;
+    protected ?Less_Parser $compiler = null;
 
     /**
      * @var Data
      */
-    protected $options;
+    protected Data $options;
 
     /**
      * @param Data $options

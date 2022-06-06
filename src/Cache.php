@@ -34,32 +34,32 @@ final class Cache
     /**
      * @var int
      */
-    protected $cacheTtl = Dates::MONTH;
+    protected int $cacheTtl = Dates::MONTH;
 
     /**
      * @var string
      */
-    protected $hash = '';
+    protected string $hash = '';
 
     /**
      * @var string
      */
-    protected $basePath = '';
+    protected string $basePath = '';
 
     /**
      * @var string
      */
-    protected $resultFile = '';
+    protected string $resultFile = '';
 
     /**
      * @var string
      */
-    protected $lessFilepath = '';
+    protected string $lessFilepath = '';
 
     /**
      * @var Data
      */
-    protected $options;
+    protected Data $options;
 
     /**
      * @param Data $options
