@@ -24,12 +24,5 @@ namespace JBZoo\PHPUnit;
  */
 class LessReadmeTest extends AbstractReadmeTest
 {
-    protected $packageName = 'Less';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->params['strict_types'] = true;
-        $this->params['travis'] = false;
-    }
+    protected string $packageName = 'Less';
 }
