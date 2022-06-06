@@ -25,4 +25,15 @@ class LessCopyrightTest extends AbstractCopyrightTest
 {
     protected $packageName     = "Less";
     protected $isPhpStrictType = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->excludePaths[] = 'cache';
+        $this->excludePaths[] = 'expected-gpeasy';
+        $this->excludePaths[] = 'expected-iless';
+        $this->excludePaths[] = 'expected-leafo-pseudo';
+        $this->excludePaths[] = 'expected-leafo-real';
+    }
 }
