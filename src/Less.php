@@ -61,7 +61,7 @@ final class Less
             $cache = new Cache($this->options);
             $cache->setFile($lessFile, $basePath);
 
-            $isForce = $this->options->get('force', false, 'bool');
+            $isForce = $this->options->getBool('force');
 
             if ($isForce || $cache->isExpired()) {
                 $result = $this->driver->compile($lessFile, $basePath);
@@ -84,7 +84,10 @@ final class Less
      */
     public function setImportPath(string $fullPath, ?string $relPath = null): void
     {
-        $relPath = $relPath ?: $this->options->get('root_url');
+        $relPath = $relPath === '' || $relPath === null
+            ? $this->options->getString('root_url')
+            : $relPath;
+
         $this->driver->setImportPath($fullPath, $relPath);
     }
 
@@ -102,7 +105,7 @@ final class Less
 
         // Check cache directory
         $cachePath = FS::clean((string)$options['cache_path']);
-        if (!$cachePath) {
+        if ($cachePath === '') {
             throw new Exception('Option "cache_path" is empty!');
         }
 
@@ -127,7 +130,8 @@ final class Less
         $importPaths = [];
 
         foreach ((array)$options['import_paths'] as $path => $uri) {
-            if ($cleanPath = FS::real((string)$path)) {
+            $cleanPath = FS::real((string)$path);
+            if ($cleanPath !== '' && $cleanPath !== null) {
                 $importPaths[$cleanPath] = $uri;
             }
         }
@@ -140,11 +144,11 @@ final class Less
 
     private function prepareBasePath(?string $basePath, string $default): string
     {
-        $basePath = $basePath ?: $default;
+        $basePath = $basePath === '' || $basePath === null ? $default : $basePath;
 
         if (!Url::isAbsolute($basePath)) {
             $basePath = \trim($basePath, '\\/');
-            $basePath = $this->options->get('root_url') . '/' . $basePath;
+            $basePath = $this->options->getString('root_url') . '/' . $basePath;
         }
 
         return $basePath;

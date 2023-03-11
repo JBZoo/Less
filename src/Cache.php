@@ -26,28 +26,23 @@ use JBZoo\Utils\Vars;
 
 final class Cache
 {
-    private int $cacheTtl = Dates::MONTH;
-
-    private string $hash = '';
-
-    private string $basePath = '';
-
-    private string $resultFile = '';
-
+    private int    $cacheTtl     = Dates::MONTH;
+    private string $hash         = '';
+    private string $basePath     = '';
+    private string $resultFile   = '';
     private string $lessFilepath = '';
-
-    private Data $options;
+    private Data   $options;
 
     public function __construct(Data $options)
     {
         $this->options = $options;
-        $this->setCacheTTL($this->options->get('cache_ttl'));
+        $this->setCacheTTL($this->options->getInt('cache_ttl'));
     }
 
     public function setFile(string $lessFile, string $basePath): void
     {
         $lessFilepath = FS::real($lessFile);
-        if (!$lessFilepath) {
+        if ($lessFilepath === '' || $lessFilepath === null) {
             throw new Exception("File '{$lessFile}' not found");
         }
 
@@ -67,7 +62,7 @@ final class Cache
             return true;
         }
 
-        $fileAge = (int)(\time() - \filemtime($this->resultFile));
+        $fileAge = \time() - (int)\filemtime($this->resultFile);
         $fileAge = \abs($fileAge);
 
         if ($fileAge >= $this->cacheTtl) {
@@ -90,7 +85,7 @@ final class Cache
         $content = $this->getHeader() . $content;
         $result  = \file_put_contents($this->resultFile, $content);
 
-        if (!$result) {
+        if ($result === false || $result === 0) {
             throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile);
         }
     }
@@ -113,18 +108,20 @@ final class Cache
 
     private function getResultFile(): string
     {
-        $relPath = FS::getRelative($this->lessFilepath, $this->options->get('root_path'));
+        $relPath = FS::getRelative($this->lessFilepath, $this->options->getString('root_path'));
 
         // Normalize relative path
         $relPath = Slug::filter($relPath, '_');
         $relPath = Str::low($relPath);
 
         // Get full clean path
-        if ($cacheBasePath = FS::real($this->options->get('cache_path'))) {
+        $configCachePath = $this->options->getString('cache_path');
+        $cacheBasePath   = FS::real($configCachePath);
+        if ($cacheBasePath !== '' && $cacheBasePath !== null) {
             $fullPath = "{$cacheBasePath}/{$relPath}.css";
             $fullPath = FS::clean($fullPath);
         } else {
-            throw new Exception('Cache directory is not found');
+            throw new Exception('Cache directory is not found: ' . $configCachePath);
         }
 
         return $fullPath;
@@ -133,7 +130,7 @@ final class Cache
     private function getHash(): string
     {
         // Check depends
-        $mixins = $this->options->get('autoload', [], 'arr');
+        $mixins = $this->options->getArray('autoload');
         $hashes = [];
 
         foreach ($mixins as $mixin) {
