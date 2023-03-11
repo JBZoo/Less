@@ -1,13 +1,23 @@
 {
-    "name"         : "jbzoo/less",
-    "type"         : "library",
-    "description"  : "PHP wrapper for any less-compilers",
-    "license"      : "MIT",
-    "keywords"     : [
-        "less", "css", "less.js", "stylesheet",
-        "jbzoo", "packagist", "lessc", "gpeasy", "leafo", "lesscss", "compiler"
+    "name"              : "jbzoo/less",
+    "type"              : "library",
+    "description"       : "PHP wrapper for any less-compilers",
+    "license"           : "MIT",
+    "keywords"          : [
+        "less",
+        "css",
+        "less.js",
+        "stylesheet",
+        "jbzoo",
+        "packagist",
+        "lessc",
+        "gpeasy",
+        "leafo",
+        "lesscss",
+        "compiler"
     ],
-    "authors"      : [
+
+    "authors"           : [
         {
             "name"  : "Denis Smetannikov",
             "email" : "admin@jbzoo.com",
@@ -15,35 +25,37 @@
         }
     ],
 
-    "require"      : {
-        "php"                : ">=7.4",
+    "minimum-stability" : "dev",
+    "prefer-stable"     : true,
 
-        "jbzoo/data"         : "^4.3|^5.0",
-        "jbzoo/utils"        : "^4.5|^5.0",
-        "wikimedia/less.php" : "^3.1.0"
+    "require"           : {
+        "php"                : "^8.1",
+
+        "jbzoo/data"         : "7.x-dev",
+        "jbzoo/utils"        : "7.x-dev",
+        "wikimedia/less.php" : ">=3.2.1"
     },
 
-    "require-dev"  : {
-        "jbzoo/toolbox-dev" : "^3.1|^4.0.1"
+    "require-dev"       : {
+        "jbzoo/toolbox-dev" : "7.x-dev"
     },
 
-    "autoload"     : {
-        "psr-4" : {
-            "JBZoo\\Less\\" : "src"
-        }
+    "autoload"          : {
+        "psr-4" : {"JBZoo\\Less\\" : "src"}
     },
 
-    "autoload-dev" : {
-        "classmap" : ["tests"]
+    "autoload-dev"      : {
+        "psr-4" : {"JBZoo\\PHPUnit\\" : "tests"}
     },
 
-    "config"       : {
-        "optimize-autoloader" : true
+    "config"            : {
+        "optimize-autoloader" : true,
+        "allow-plugins"       : {"composer/package-versions-deprecated" : true}
     },
 
-    "extra"        : {
+    "extra"             : {
         "branch-alias" : {
-            "dev-master" : "4.x-dev"
+            "dev-master" : "7.x-dev"
         }
     }
 }

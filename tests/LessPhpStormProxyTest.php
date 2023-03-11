@@ -1,28 +1,21 @@
 <?php
 
 /**
- * JBZoo Toolbox - Less
+ * JBZoo Toolbox - Less.
  *
  * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package    Less
  * @license    MIT
  * @copyright  Copyright (C) JBZoo.com, All rights reserved.
- * @link       https://github.com/JBZoo/Less
+ * @see        https://github.com/JBZoo/Less
  */
 
 declare(strict_types=1);
 
 namespace JBZoo\PHPUnit;
 
-/**
- * Class LessReadmeTest
- *
- * @package JBZoo\PHPUnit
- */
-class LessReadmeTest extends AbstractReadmeTest
+final class LessPhpStormProxyTest extends \JBZoo\Codestyle\PHPUnit\AbstractPhpStormProxyTest
 {
-    protected string $packageName = 'Less';
 }

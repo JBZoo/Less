@@ -16,15 +16,18 @@ declare(strict_types=1);
 
 namespace JBZoo\PHPUnit;
 
-/**
- * @SuppressWarnings(PHPMD.Superglobals)
- */
-class DriverGpeasyTest extends AbstractLessTest
+final class LessPackageTest extends \JBZoo\Codestyle\PHPUnit\AbstractPackageTest
 {
+    protected string $packageName = 'Less';
+
     protected function setUp(): void
     {
         parent::setUp();
-        $this->driver       = 'gpeasy';
-        $this->expectedPath = 'gpeasy';
+
+        $this->excludedPathsForCopyrights[] = 'cache';
+        $this->excludedPathsForCopyrights[] = 'expected-gpeasy';
+        $this->excludedPathsForCopyrights[] = 'expected-iless';
+        $this->excludedPathsForCopyrights[] = 'expected-leafo-pseudo';
+        $this->excludedPathsForCopyrights[] = 'expected-leafo-real';
     }
 }
