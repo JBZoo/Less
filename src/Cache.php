@@ -1,16 +1,15 @@
 <?php
 
 /**
- * JBZoo Toolbox - Less
+ * JBZoo Toolbox - Less.
  *
  * This file is part of the JBZoo Toolbox project.
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package    Less
  * @license    MIT
  * @copyright  Copyright (C) JBZoo.com, All rights reserved.
- * @link       https://github.com/JBZoo/Less
+ * @see        https://github.com/JBZoo/Less
  */
 
 declare(strict_types=1);
@@ -25,55 +24,26 @@ use JBZoo\Utils\Slug;
 use JBZoo\Utils\Str;
 use JBZoo\Utils\Vars;
 
-/**
- * Class Cache
- * @package JBZoo\Less
- */
 final class Cache
 {
-    /**
-     * @var int
-     */
-    protected int $cacheTtl = Dates::MONTH;
+    private int $cacheTtl = Dates::MONTH;
 
-    /**
-     * @var string
-     */
-    protected string $hash = '';
+    private string $hash = '';
 
-    /**
-     * @var string
-     */
-    protected string $basePath = '';
+    private string $basePath = '';
 
-    /**
-     * @var string
-     */
-    protected string $resultFile = '';
+    private string $resultFile = '';
 
-    /**
-     * @var string
-     */
-    protected string $lessFilepath = '';
+    private string $lessFilepath = '';
 
-    /**
-     * @var Data
-     */
-    protected Data $options;
+    private Data $options;
 
-    /**
-     * @param Data $options
-     */
     public function __construct(Data $options)
     {
         $this->options = $options;
         $this->setCacheTTL($this->options->get('cache_ttl'));
     }
 
-    /**
-     * @param string $lessFile
-     * @param string $basePath
-     */
     public function setFile(string $lessFile, string $basePath): void
     {
         $lessFilepath = FS::real($lessFile);
@@ -82,15 +52,14 @@ final class Cache
         }
 
         $this->lessFilepath = $lessFilepath;
-        $this->basePath = FS::clean($basePath);
+        $this->basePath     = FS::clean($basePath);
 
-        $this->hash = $this->getHash();
+        $this->hash       = $this->getHash();
         $this->resultFile = $this->getResultFile();
     }
 
     /**
-     * Check is current cache is expired
-     * @return bool
+     * Check is current cache is expired.
      */
     public function isExpired(): bool
     {
@@ -106,15 +75,43 @@ final class Cache
         }
 
         $firstLine = \trim((string)FS::firstLine($this->resultFile));
-        $expected = \trim($this->getHeader());
+        $expected  = \trim($this->getHeader());
 
         return $expected !== $firstLine;
     }
 
     /**
-     * @return string
+     * Save result to cache.
+     *
+     * @throws Exception
      */
-    protected function getResultFile(): string
+    public function save(string $content): void
+    {
+        $content = $this->getHeader() . $content;
+        $result  = \file_put_contents($this->resultFile, $content);
+
+        if (!$result) {
+            throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile);
+        }
+    }
+
+    public function getFile(): string
+    {
+        return $this->resultFile;
+    }
+
+    /**
+     * @param int $newTTL In seconds (1 to 365 days)
+     */
+    public function setCacheTTL(int $newTTL): void
+    {
+        $newTTL = Filter::int($newTTL);
+        $newTTL = Vars::limit($newTTL, 1, Dates::YEAR);
+
+        $this->cacheTtl = $newTTL;
+    }
+
+    private function getResultFile(): string
     {
         $relPath = FS::getRelative($this->lessFilepath, $this->options->get('root_path'));
 
@@ -133,20 +130,18 @@ final class Cache
         return $fullPath;
     }
 
-    /**
-     * @return string
-     */
-    protected function getHash(): string
+    private function getHash(): string
     {
         // Check depends
         $mixins = $this->options->get('autoload', [], 'arr');
         $hashes = [];
+
         foreach ($mixins as $mixin) {
             $hashes[$mixin] = \md5_file($mixin);
         }
         \ksort($hashes);
 
-        $options = $this->options->getArrayCopy();
+        $options              = $this->options->getArrayCopy();
         $options['functions'] = \array_keys($options['functions']);
         \ksort($options);
 
@@ -163,46 +158,8 @@ final class Cache
         return \md5($hashed); // md5 is faster than sha1!
     }
 
-    /**
-     * @return string
-     */
-    protected function getHeader(): string
+    private function getHeader(): string
     {
         return "/* cache-id:{$this->hash} */\n";
-    }
-
-    /**
-     * Save result to cache
-     *
-     * @param string $content
-     * @throws Exception
-     */
-    public function save(string $content): void
-    {
-        $content = $this->getHeader() . $content;
-        $result = \file_put_contents($this->resultFile, $content);
-
-        if (!$result) {
-            throw new Exception('JBZoo/Less: File not save - ' . $this->resultFile);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getFile(): string
-    {
-        return $this->resultFile;
-    }
-
-    /**
-     * @param int $newTTL In seconds (1 to 365 days)
-     */
-    public function setCacheTTL(int $newTTL): void
-    {
-        $newTTL = Filter::int($newTTL);
-        $newTTL = Vars::limit($newTTL, 1, Dates::YEAR);
-
-        $this->cacheTtl = $newTTL;
     }
 }
