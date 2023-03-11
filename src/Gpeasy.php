@@ -22,8 +22,7 @@ use JBZoo\Utils\FS;
 final class Gpeasy
 {
     private \Less_Parser $compiler;
-
-    private Data $options;
+    private Data         $options;
 
     public function __construct(Data $options)
     {

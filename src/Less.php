@@ -24,6 +24,9 @@ use JBZoo\Utils\Url;
 
 final class Less
 {
+    private Data   $options;
+    private Gpeasy $driver;
+
     private array $default = [
         'force'        => false,
         'debug'        => false, // On/Off Source map for browser debug console
@@ -36,10 +39,6 @@ final class Less
         'cache_path'   => './cache',
         'cache_ttl'    => Dates::MONTH,  // 30 days
     ];
-
-    private Data $options;
-
-    private Gpeasy $driver;
 
     /**
      * @throws Exception
