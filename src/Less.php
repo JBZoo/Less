@@ -26,7 +26,7 @@ final class Less
 {
     private array $default = [
         'force'        => false,
-        'debug'        => false,    // On/Off Source map for browser debug console
+        'debug'        => false, // On/Off Source map for browser debug console
         'root_url'     => null,
         'root_path'    => null,
         'global_vars'  => [],
@@ -47,7 +47,7 @@ final class Less
     public function __construct(array $options = [])
     {
         $this->options = $this->prepareOptions($options);
-        $this->driver = new Gpeasy($this->options);
+        $this->driver  = new Gpeasy($this->options);
     }
 
     /**
@@ -71,7 +71,7 @@ final class Less
             $cssPath = $cache->getFile();
         } catch (\Exception $exception) { // Rewrite exception type
             $message = 'JBZoo/Less: ' . $exception->getMessage();
-            $trace = $exception->getTraceAsString();
+            $trace   = $exception->getTraceAsString();
 
             throw new Exception($message . \PHP_EOL . $trace);
         }
@@ -95,7 +95,7 @@ final class Less
     private function prepareOptions(array $options): Data
     {
         // Default data for current system
-        $this->default['root_url'] = Url::root();
+        $this->default['root_url']  = Url::root();
         $this->default['root_path'] = Sys::getDocRoot();
 
         $options = \array_merge($this->default, $options);
@@ -112,7 +112,7 @@ final class Less
 
         $options['cache_path'] = FS::real($cachePath);
 
-        $rootUrl = $options['root_url'] ?? '';
+        $rootUrl             = $options['root_url'] ?? '';
         $options['root_url'] = \rtrim((string)$rootUrl, '/');
 
         // Check mixin paths

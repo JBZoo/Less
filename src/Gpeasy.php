@@ -21,9 +21,7 @@ use JBZoo\Utils\FS;
 
 final class Gpeasy
 {
-    /**
-     * @phan-suppress PhanUndeclaredTypeProperty
-     */
+    /** @phan-suppress PhanUndeclaredTypeProperty */
     private ?\Less_Parser $compiler = null;
 
     private Data $options;
