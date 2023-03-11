@@ -68,12 +68,8 @@ final class Gpeasy
         return $this->options->getBool('debug');
     }
 
-    /**
-     * @throws \Less_Exception_Parser
-     */
     private function compileFile(string $fullPath, string $relPath): string
     {
-        $this->initCompiler();
         $this->compiler->parseFile($fullPath, $relPath);
 
         return $this->compiler->getCss();

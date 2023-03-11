@@ -40,18 +40,12 @@ final class Less
         'cache_ttl'    => Dates::MONTH,  // 30 days
     ];
 
-    /**
-     * @throws Exception
-     */
     public function __construct(array $options = [])
     {
         $this->options = $this->prepareOptions($options);
         $this->driver  = new Gpeasy($this->options);
     }
 
-    /**
-     * @throws Exception
-     */
     public function compile(string $lessFile, ?string $basePath = null): string
     {
         try {
@@ -78,9 +72,6 @@ final class Less
         return $cssPath;
     }
 
-    /**
-     * @throws Exception
-     */
     public function setImportPath(string $fullPath, ?string $relPath = null): void
     {
         $relPath = $relPath === '' || $relPath === null
@@ -91,7 +82,6 @@ final class Less
     }
 
     /**
-     * @throws Exception
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function prepareOptions(array $options): Data

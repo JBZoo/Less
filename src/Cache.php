@@ -77,8 +77,6 @@ final class Cache
 
     /**
      * Save result to cache.
-     *
-     * @throws Exception
      */
     public function save(string $content): void
     {
