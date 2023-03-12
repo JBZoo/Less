@@ -33,7 +33,7 @@
 
         "jbzoo/data"         : "7.x-dev",
         "jbzoo/utils"        : "7.x-dev",
-        "wikimedia/less.php" : ">=3.2.1"
+        "wikimedia/less.php" : ">=4.0.0"
     },
 
     "require-dev"       : {
