@@ -24,8 +24,4 @@ return \array_merge($default, [
         'vendor/jbzoo/utils',
         'vendor/wikimedia/less.php/lib/Less',
     ],
-
-    //    'file_list' => [
-    //        'vendor/wikimedia/less.php/lib/Less/Parser.php',
-    //    ],
 ]);
