@@ -1,9 +1,9 @@
 a:hover {
-    color: #ff0000;
+    color: #f00;
 }
 a:visited {
-    color: #00ff00;
+    color: #0f0;
 }
 a:focus {
-    color: #0000ff;
+    color: #00f;
 }
