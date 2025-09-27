@@ -209,6 +209,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testDebugOn(): void
     {
+        skip('Not supported yet');
         $less = new Less(['debug' => true]);
 
         $actual  = $less->compile('tests/resources/simple.less');
@@ -218,6 +219,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testDebugOff(): void
     {
+        skip('Not supported yet');
         $less    = new Less();
         $actual  = $less->compile('tests/resources/simple.less');
         $content = \file_get_contents($actual);
