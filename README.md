@@ -4,81 +4,152 @@
 [![Stable Version](https://poser.pugx.org/jbzoo/less/version)](https://packagist.org/packages/jbzoo/less/)    [![Total Downloads](https://poser.pugx.org/jbzoo/less/downloads)](https://packagist.org/packages/jbzoo/less/stats)    [![Dependents](https://poser.pugx.org/jbzoo/less/dependents)](https://packagist.org/packages/jbzoo/less/dependents?order_by=downloads)    [![GitHub License](https://img.shields.io/github/license/jbzoo/less)](https://github.com/JBZoo/Less/blob/master/LICENSE)
 
 
-PHP wrapper for [wikimedia/less.php](https://github.com/wikimedia/less.php).
+A powerful PHP wrapper for [wikimedia/less.php](https://github.com/wikimedia/less.php) that provides enhanced LESS compilation with caching, advanced configuration options, and streamlined error handling.
+
+## Features
+
+- **Smart Caching**: Automatic file-based caching with TTL support
+- **Flexible Configuration**: Comprehensive options for paths, variables, and compilation behavior
+- **Global Variables**: Define LESS variables available across all compiled files
+- **Auto-loading**: Automatically include mixin files before compilation
+- **Custom Functions**: Register custom PHP functions for use in LESS files
+- **Import Path Management**: Configure multiple import directories with URL mappings
+- **Enhanced Error Handling**: Detailed error messages with context
 
 
-## Install
-```sh
+## Requirements
+
+- PHP 8.2 or higher
+- Composer
+
+## Installation
+
+```bash
 composer require jbzoo/less
 ```
 
-## Usage
+## Quick Start
+
 ```php
 use JBZoo\Less\Less;
 
-try { // Any error handling
+// Basic usage
+$less = new Less();
+$cssPath = $less->compile('/path/to/styles.less');
 
-    // There is not option required
+// With custom cache directory
+$less = new Less(['cache_path' => './custom-cache']);
+$cssPath = $less->compile('./assets/styles.less');
+```
+
+## Advanced Configuration
+
+All configuration options are optional and can be customized based on your needs:
+
+```php
+use JBZoo\Less\Less;
+
+try {
     $less = new Less([
-        'force'        => false,                    // Can forced compile on each compile() calling
-        'debug'        => false,                    // On/Off Source map for browser debug console
+        // Compilation behavior
+        'force'        => false,                    // Force recompilation on each call
+        'debug'        => false,                    // Enable source maps (future feature)
 
-        'root_url'     => 'http://site.com/',       // Root URL for all CSS files and debug mode
-                                                    // For example - background:url('http://site.com/image.png')
+        // Path configuration
+        'root_url'     => 'http://site.com/',       // Root URL for CSS asset references
+        'root_path'    => '/full/path/to/site',     // Full path to web root directory
 
-        'root_path'    => '/full/path/to/site',     // Full path to root of web directory
-
-        'global_vars'  => [                         // Some vars that will be in all less files
-            'color'  => '#f00',                     // @color: #f00;
-            'media' => 'print',                     // @media: print;
+        // LESS features
+        'global_vars'  => [                         // Global variables available in all files
+            'primary-color' => '#007bff',           // Becomes @primary-color: #007bff;
+            'font-size'     => '14px',              // Becomes @font-size: 14px;
         ],
 
-        'autoload'     => [                         // Autoload before eash compiling
-            '/full/path/to/my_mixins.less',         // See the best of collection here
-        ],                                          // https://github.com/JBZoo/JBlank/tree/master/less/misc
+        'autoload'     => [                         // Files automatically included before compilation
+            '/full/path/to/mixins.less',
+            '/full/path/to/variables.less',
+        ],
 
-        'import_paths' => [                         // Import paths
+        'import_paths' => [                         // Directory mappings for @import statements
             '/full/path/to/assets/less/' => 'http://site.com/assets/less/',
-            './or/relative/path/to/dir/' => './or/relative/path/to/dir/',
+            './relative/path/to/less/'   => './relative/path/to/less/',
         ],
 
-        'cache_path'   => './cache',                // Where JBZoo/Less will save compiled CSS-files
-        'cache_ttl'    => 2592000,                  // How often rebuild css files (in seconds)
+        // Caching configuration
+        'cache_path'   => './cache',                // Cache directory location
+        'cache_ttl'    => 2592000,                  // Cache TTL in seconds (30 days)
 
-        'functions' => [                            // Custom functions for less (only for gpeasy!)
-            'str-revert' => function ($arg) {       // Register name `str-revert()`
-                $arg->value = strrev($arg->value);  // Just revert argument
-                return $arg;                        // Result: str-revert('1234567890'); => '0987654321';
+        // Custom functions (advanced feature)
+        'functions' => [
+            'str-reverse' => function ($arg) {
+                $arg->value = strrev($arg->value);
+                return $arg;
             },
         ],
     ]);
 
+    // Add import paths dynamically
     $less->setImportPath(
-        '/full/path/to/other/import/directory/',    // Full or relative path
-        'http://site.com/other/import/directory/'   // Not required
+        '/additional/import/directory/',
+        'http://site.com/additional/directory/'     // URL mapping (optional)
     );
 
-    $fullCSSpath_1 = $less->compile('/full/path/to/styles.less');       // Basepath from config
-    $fullCSSpath_2 = $less->compile('./relative/path/to/styles.less');  // OR relative path
-    $fullCSSpath_3 = $less->compile(
+    // Compile LESS files
+    $cssPath1 = $less->compile('/full/path/to/styles.less');
+    $cssPath2 = $less->compile('./relative/path/to/styles.less');
+    $cssPath3 = $less->compile(
         './relative/path/to/styles.less',
-        'http://site.com/relative/path/to/'                             // Force base path for any URLs
+        'http://site.com/custom/base/path/'         // Override base path for URLs
     );
 
 } catch (JBZoo\Less\Exception $e) {
-    echo 'JBZoo/Less: ' . $e->getMessage();
+    echo 'Compilation error: ' . $e->getMessage();
 }
-
 ```
 
+## Configuration Options
 
-## Unit tests and check code style
-```sh
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `force` | bool | `false` | Force recompilation on every call, ignoring cache |
+| `debug` | bool | `false` | Enable debug mode (future: source maps) |
+| `root_url` | string | auto-detected | Base URL for asset references in CSS |
+| `root_path` | string | auto-detected | Full filesystem path to web root |
+| `global_vars` | array | `[]` | Global LESS variables available in all files |
+| `autoload` | array | `[]` | LESS files to automatically include before compilation |
+| `import_paths` | array | `[]` | Directory mappings for @import resolution |
+| `cache_path` | string | `'./cache'` | Directory for storing compiled CSS files |
+| `cache_ttl` | int | `2592000` | Cache time-to-live in seconds (30 days) |
+| `functions` | array | `[]` | Custom PHP functions callable from LESS |
+
+
+## Development
+
+### Running Tests
+
+```bash
+# Install dependencies
 make update
+
+# Run all tests and code quality checks
 make test-all
+
+# Run only PHPUnit tests
+make test
+
+# Run only code style checks
+make codestyle
 ```
 
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Run tests and ensure code quality (`make test-all`)
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
 
 ## License
 
-MIT
+MIT License. See [LICENSE](LICENSE) file for details.
