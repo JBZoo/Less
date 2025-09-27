@@ -22,6 +22,9 @@ use JBZoo\Utils\FS;
 use JBZoo\Utils\Sys;
 use JBZoo\Utils\Url;
 
+/**
+ * @psalm-suppress UnusedClass
+ */
 final class Less
 {
     private Data   $options;
@@ -136,7 +139,7 @@ final class Less
         $basePath = $basePath === '' || $basePath === null ? $default : $basePath;
 
         if (!Url::isAbsolute($basePath)) {
-            $basePath = \trim($basePath, '\\/');
+            $basePath = \trim($basePath, '\/');
             $basePath = $this->options->getString('root_url') . '/' . $basePath;
         }
 
