@@ -16,3 +16,4 @@ cache
 vendor
 composer.lock
 *.cache
+.claude
