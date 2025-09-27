@@ -29,7 +29,7 @@ abstract class AbstractLessTest extends PHPUnit
 
     protected function setUp(): void
     {
-        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['HTTP_HOST']   = 'example.com';
         $_SERVER['SERVER_PORT'] = '80';
 
         FS::rmDir(PROJECT_ROOT . '/cache');
@@ -40,7 +40,7 @@ abstract class AbstractLessTest extends PHPUnit
     {
         $less = new Less();
 
-        $actual = $less->compile('tests/resources/simple.less');
+        $actual   = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/simple.css';
 
         $this->isFileEq($expected, $actual);
@@ -72,7 +72,7 @@ abstract class AbstractLessTest extends PHPUnit
 
         $less->compile('tests/resources/simple.less');
 
-        $actual = PROJECT_ROOT . '/tests/cache/' . $uniqCacheFolder . '/tests_resources_simple_less.css';
+        $actual   = PROJECT_ROOT . '/tests/cache/' . $uniqCacheFolder . '/tests_resources_simple_less.css';
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/simple.css';
 
         $this->isFileEq($expected, $actual);
@@ -80,28 +80,28 @@ abstract class AbstractLessTest extends PHPUnit
 
     public function testCustomRootUrl(): void
     {
-        $less = new Less(['root_url' => '//custom-site.com/']);
-        $actual = $less->compile('tests/resources/simple.less');
+        $less     = new Less(['root_url' => '//custom-site.com/']);
+        $actual   = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['root_url' => 'http://custom-site.com/']);
-        $actual = $less->compile('tests/resources/simple.less');
+        $less     = new Less(['root_url' => 'http://custom-site.com/']);
+        $actual   = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_http.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['root_url' => 'https://custom-site.com/']);
-        $actual = $less->compile('tests/resources/simple.less');
+        $less     = new Less(['root_url' => 'https://custom-site.com/']);
+        $actual   = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_https.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['root_url' => '.']);
-        $actual = $less->compile('tests/resources/simple.less');
+        $less     = new Less(['root_url' => '.']);
+        $actual   = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_dot.css';
         $this->isFileEq($expected, $actual);
 
-        $less = new Less(['root_url' => '../../path/']);
-        $actual = $less->compile('tests/resources/simple.less');
+        $less     = new Less(['root_url' => '../../path/']);
+        $actual   = $less->compile('tests/resources/simple.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/custom_root_url_complex.css';
         $this->isFileEq($expected, $actual);
     }
@@ -148,7 +148,7 @@ abstract class AbstractLessTest extends PHPUnit
             ],
         ]);
 
-        $actual = $less->compile('tests/resources/vars.less');
+        $actual   = $less->compile('tests/resources/vars.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/vars.css';
 
         $this->isFileEq($expected, $actual);
@@ -164,7 +164,7 @@ abstract class AbstractLessTest extends PHPUnit
             ],
         ]);
 
-        $actual = $less->compile('tests/resources/autoload.less');
+        $actual   = $less->compile('tests/resources/autoload.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/autoload.css';
 
         $this->isFileEq($expected, $actual);
@@ -178,7 +178,7 @@ abstract class AbstractLessTest extends PHPUnit
             ],
         ]);
 
-        $actual = $less->compile('tests/resources/import.less');
+        $actual   = $less->compile('tests/resources/import.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/import.css';
 
         $this->isFileEq($expected, $actual);
@@ -193,7 +193,7 @@ abstract class AbstractLessTest extends PHPUnit
             'http://example.com/tests/resources/imported_2',
         );
 
-        $actual = $less->compile('tests/resources/import.less');
+        $actual   = $less->compile('tests/resources/import.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/import.css';
 
         $this->isFileEq($expected, $actual);
@@ -212,7 +212,7 @@ abstract class AbstractLessTest extends PHPUnit
         skip('Not supported yet');
         $less = new Less(['debug' => true]);
 
-        $actual = $less->compile('tests/resources/simple.less');
+        $actual  = $less->compile('tests/resources/simple.less');
         $content = \file_get_contents($actual);
         isContain('sourceMappingURL=data:application/json', $content);
     }
@@ -220,14 +220,14 @@ abstract class AbstractLessTest extends PHPUnit
     public function testDebugOff(): void
     {
         skip('Not supported yet');
-        $less = new Less();
-        $actual = $less->compile('tests/resources/simple.less');
+        $less    = new Less();
+        $actual  = $less->compile('tests/resources/simple.less');
         $content = \file_get_contents($actual);
         isNotContain('sourceMappingURL=data:application/json', $content);
 
         $this->setUp();
-        $less = new Less(['debug' => false]);
-        $actual = $less->compile('tests/resources/simple.less');
+        $less    = new Less(['debug' => false]);
+        $actual  = $less->compile('tests/resources/simple.less');
         $content = \file_get_contents($actual);
         isNotContain('sourceMappingURL=data:application/json', $content);
     }
@@ -261,7 +261,7 @@ abstract class AbstractLessTest extends PHPUnit
             ],
         ]);
 
-        $actual = $less->compile('tests/resources/function.less');
+        $actual   = $less->compile('tests/resources/function.less');
         $expected = PROJECT_ROOT . '/tests/expected-' . $this->expectedPath . '/function.css';
 
         $this->isFileEq($expected, $actual);
@@ -272,8 +272,8 @@ abstract class AbstractLessTest extends PHPUnit
      */
     protected function isFileEq(string $expectedFile, string $actualFile): void
     {
-        $actual = \file_get_contents($actualFile);
-        $actual = \trim(\preg_replace('#^(.*)' . \PHP_EOL . '#', '', $actual)); // remove first line (cache header)
+        $actual   = \file_get_contents($actualFile);
+        $actual   = \trim(\preg_replace('#^(.*)' . \PHP_EOL . '#', '', $actual)); // remove first line (cache header)
         $expected = \trim(\file_get_contents($expectedFile));
 
         isSame($expected, $actual, 'File: ' . $expectedFile);
