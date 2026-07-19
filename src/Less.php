@@ -30,6 +30,20 @@ final class Less
     private Data   $options;
     private Gpeasy $driver;
 
+    /**
+     * @var array{
+     *     force: bool,
+     *     debug: bool,
+     *     root_url: ?string,
+     *     root_path: ?string,
+     *     global_vars: array,
+     *     autoload: array,
+     *     import_paths: array,
+     *     functions: array,
+     *     cache_path: string,
+     *     cache_ttl: int,
+     * }
+     */
     private array $default = [
         'force'        => false,
         'debug'        => false, // On/Off Source map for browser debug console
