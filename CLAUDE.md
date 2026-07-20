@@ -73,7 +73,7 @@ Test resources include LESS files, expected CSS outputs, and assets (images) for
 
 ## Key Dependencies
 
-- **PHP 8.2+** requirement
+- **PHP 8.3+** requirement
 - **wikimedia/less.php** (>=5.4.0) - Core LESS compiler
 - **JBZoo ecosystem**:
   - `jbzoo/data` - Configuration data handling
